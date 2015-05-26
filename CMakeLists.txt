@@ -16,3 +16,13 @@ find_package(TagLib REQUIRED)
 file(GLOB sources "src/*.cpp")
 
 add_executable(${PROJECT_NAME} ${sources})
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
+
+target_link_libraries(${PROJECT_NAME}
+    boost_system
+    boost_filesystem
+    tag
+    musicbrainz5
+)
