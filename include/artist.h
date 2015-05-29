@@ -2,6 +2,8 @@
 
 #include "release.h"
 
+#include <memory>
+
 #include <musicbrainz5/Artist.h>
 
 class artist
@@ -21,3 +23,5 @@ private:
 	std::string name;
 	release_set_t releases;
 };
+
+typedef std::shared_ptr<artist> artist_ptr_t;
