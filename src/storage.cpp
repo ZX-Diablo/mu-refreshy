@@ -2,6 +2,7 @@
 
 storage::storage ()
 	: s()
+	, m()
 {
 }
 
@@ -9,25 +10,41 @@ storage::~storage ()
 {
 }
 
-void storage::add (const artist_ptr_t& artist)
+bool storage::add (const artist_ptr_t& artist)
 {
-	this->s.insert(artist);
-}
-
-bool storage::name_exists (const std::string& name) const
-{
+	lock_t lock(this->m);
+	
 	auto& index = this->s.get<name_tag_t>();
-	return index.find(name) != index.end();
+	auto it = index.find(artist->get_name());
+	
+	if (it == index.end())
+	{
+		this->s.insert(artist);
+		return true;
+	}
+	
+	return false;
 }
 
-bool storage::id_exists (const std::string& id) const
+bool storage::replace (const artist_ptr_t& artist)
 {
-	auto& index = this->s.get<id_tag_t>();
-	return index.find(id) != index.end();
+	lock_t lock(this->m);
+	
+	auto& index = this->s.get<name_tag_t>();
+	auto it = index.find(artist->get_name());
+	
+	if (it != index.end())
+	{
+		index.replace(it, artist);
+		return true;
+	}
+	
+	return false;
 }
 
 artist_ptr_t storage::get_by_name (const std::string& name) const
 {
+	lock_t lock(this->m);
 	auto& index = this->s.get<name_tag_t>();
 	auto it = index.find(name);
 	return (it != index.end() ? (*it) : nullptr);
@@ -35,7 +52,17 @@ artist_ptr_t storage::get_by_name (const std::string& name) const
 
 artist_ptr_t storage::get_by_id (const std::string& id) const
 {
+	lock_t lock(this->m);
 	auto& index = this->s.get<id_tag_t>();
 	auto it = index.find(id);
 	return (it != index.end() ? (*it) : nullptr);
+}
+
+void storage::print_all () const
+{
+	auto& index = this->s.get<name_tag_t>();
+	for (auto it = index.begin(); it != index.end(); ++it)
+	{
+		std::cout << (*it)->get_name() << std::endl;
+	}
 }

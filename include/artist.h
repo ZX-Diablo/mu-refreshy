@@ -9,7 +9,7 @@
 class artist
 {
 public:
-	artist (const std::string& id, const std::string& name);
+	artist (const std::string& name);
 	artist (MusicBrainz5::CArtist* a);
 	~artist ();
 	

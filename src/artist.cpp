@@ -1,7 +1,7 @@
 #include "../include/artist.h"
 
-artist::artist (const std::string& id, const std::string& name)
-	: id(id)
+artist::artist (const std::string& name)
+	: id()
 	, name(name)
 	, releases()
 {

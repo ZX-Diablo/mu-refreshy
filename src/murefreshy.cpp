@@ -1,7 +1,17 @@
 #include <iostream>
 
 #include <boost/filesystem.hpp>
+
 #include <taglib/fileref.h>
+#include <musicbrainz5/Query.h>
+#include <musicbrainz5/Artist.h>
+
+#include "../include/pool.h"
+#include "../include/storage.h"
+#include "../include/artist.h"
+
+typedef boost::filesystem::path path_t;
+typedef boost::filesystem::directory_iterator dit_t;
 
 int main (int argc, char** argv)
 {
@@ -12,36 +22,53 @@ int main (int argc, char** argv)
 	}
 	
 	std::string root_str = argv[1];
-	boost::filesystem::path root(root_str);
+	path_t root(root_str);
+	
+	MusicBrainz5::CQuery mb("mu-refreshy-0.0.1");
+	storage db;
+	pool tp(20);
 	
 	try
 	{
 		if (boost::filesystem::exists(root) && boost::filesystem::is_directory(root))
 		{
 			std::cout << "Start scanning " << root << " ..." << std::endl;
-			std::for_each(
-				boost::filesystem::directory_iterator(root),
-				boost::filesystem::directory_iterator(),
-				[](const boost::filesystem::path& p)
+			std::for_each(dit_t(root), dit_t(), [&mb, &db, &tp](const path_t& p)
 			{
 				if (boost::filesystem::is_directory(p))
 				{
-					std::cout << "Subdirectory " << p << std::endl;
-					std::for_each(
-						boost::filesystem::directory_iterator(p),
-						boost::filesystem::directory_iterator(),
-						[](const boost::filesystem::path& f)
+					std::for_each(dit_t(p), dit_t(), [&mb, &db, &tp](const path_t& f)
 					{
 						if (boost::filesystem::is_regular_file(f) && f.extension() == ".mp3")
 						{
-							TagLib::FileRef file(f.c_str());
-							TagLib::Tag* tag = file.tag();
-							
-							std::cout << tag->artist() << " - " << tag->year() << " - " << tag->album() << std::endl;
+							tp.add_task([&mb, &db, f]()
+							{
+								TagLib::FileRef file(f.c_str());
+								TagLib::Tag* tag = file.tag();
+								
+								artist_ptr_t a = std::make_shared<artist>(tag->artist().toCString());
+								if (db.add(a))
+								{
+									MusicBrainz5::CMetadata data = mb.Query("artist", "", "",
+										{ {"query", "artist:\"" + a->get_name() + "\" AND type:group"} });
+									MusicBrainz5::CArtistList* list = data.ArtistList();
+									for (int i = 0; i < list->NumItems(); i++)
+									{
+										MusicBrainz5::CArtist* art = list->Item(i);
+										std::cout << art->Name() << std::endl;
+									}
+								}
+							});
 						}
 					});
 				}
 			});
+			
+			std::cout << "WAITING" << std::endl;
+			tp.wait();
+			
+			std::cout << "PRINTING" << std::endl;
+			db.print_all();
 		}
 	}
 	catch (boost::filesystem::filesystem_error& e)

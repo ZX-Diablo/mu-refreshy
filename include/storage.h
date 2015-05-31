@@ -6,19 +6,21 @@
 #include <boost/multi_index/ordered_index.hpp>
 #include <boost/multi_index/mem_fun.hpp>
 
+#include <mutex>
+
 class storage
 {
 public:
 	storage ();
 	~storage ();
 	
-	void add (const artist_ptr_t& artist);
-	
-	bool name_exists (const std::string& name) const;
-	bool id_exists (const std::string& id) const;
+	bool add (const artist_ptr_t& artist);
+	bool replace (const artist_ptr_t& artist);
 	
 	artist_ptr_t get_by_name (const std::string& name) const;
 	artist_ptr_t get_by_id (const std::string& id) const;
+	
+	void print_all () const;
 	
 private:
 	struct id_tag_t {};
@@ -39,6 +41,9 @@ private:
 		>
 	> storage_t;
 	
+	typedef std::lock_guard<std::mutex> lock_t;
+	
 private:
 	storage_t s;
+	mutable std::mutex m;
 };
