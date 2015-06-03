@@ -1,11 +1,26 @@
 #include "../include/release.h"
 
+#include <sstream>
+
 release::release (const std::string& id, const std::string& title, const std::string& type, const date& d)
 	: id(id)
 	, title(title)
 	, type(type)
 	, d(d)
 {
+}
+
+release::release (TagLib::Tag* tag)
+	: id()
+	, title()
+	, type()
+	, d()
+{
+	if (tag)
+	{
+		this->title = tag->album().toCString();
+		this->d = date(tag->year());
+	}
 }
 
 release::release (MusicBrainz5::CReleaseGroup* rg)
@@ -47,12 +62,22 @@ const date& release::get_date () const
 	return this->d;
 }
 
-bool operator== (const release& lhs, const release& rhs)
-{
-	return lhs.get_id() == rhs.get_id();
-}
-
 bool operator< (const release& lhs, const release& rhs)
 {
+	if (lhs.get_id() == rhs.get_id())
+	{
+		return false;
+	}
+	
 	return lhs.get_date() < rhs.get_date();
+}
+
+bool release_comparator::operator() (const release_ptr_t& lhs, const release_ptr_t& rhs)
+{
+	if (lhs == nullptr || rhs == nullptr)
+	{
+		return false;
+	}
+	
+	return *lhs < *rhs;
 }

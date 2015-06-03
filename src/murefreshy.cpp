@@ -6,6 +6,7 @@
 #include <musicbrainz5/Query.h>
 #include <musicbrainz5/Artist.h>
 
+#include "../include/musicdb.h"
 #include "../include/pool.h"
 #include "../include/storage.h"
 #include "../include/artist.h"
@@ -46,7 +47,7 @@ int main (int argc, char** argv)
 								TagLib::FileRef file(f.c_str());
 								TagLib::Tag* tag = file.tag();
 								
-								artist_ptr_t a = std::make_shared<artist>(tag->artist().toCString());
+								artist_ptr_t a = std::make_shared<artist>(tag);
 								if (db.add(a))
 								{
 									MusicBrainz5::CMetadata data = mb.Query("artist", "", "",

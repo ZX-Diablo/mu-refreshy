@@ -2,9 +2,16 @@
 
 #include <ctime>
 
-date::date ()
+date::date (unsigned int year, unsigned int month, unsigned int day)
 	: datetime()
 {
+	struct tm timeinfo;
+		
+	timeinfo.tm_year = (year >= 1900 ? year - 1900 : 0);
+	timeinfo.tm_mon = (month > 0 ? month - 1 : 0);
+	timeinfo.tm_mday = day;
+	
+	this->datetime = std::chrono::system_clock::from_time_t(mktime(&timeinfo));
 }
 
 date::date (const std::string& d)
