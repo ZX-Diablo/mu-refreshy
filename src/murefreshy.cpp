@@ -22,8 +22,7 @@ int main (int argc, char** argv)
 		return -1;
 	}
 	
-	std::string root_str = argv[1];
-	path_t root(root_str);
+	path_t root(argv[1]);
 	
 	MusicBrainz5::CQuery mb("mu-refreshy-0.0.1");
 	storage db;

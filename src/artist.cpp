@@ -4,6 +4,7 @@ artist::artist (const std::string& id, const std::string& name)
 	: id(id)
 	, name(name)
 	, releases()
+	, local_releases()
 {
 }
 
@@ -11,11 +12,12 @@ artist::artist (TagLib::Tag* tag)
 	: id()
 	, name()
 	, releases()
+	, local_releases()
 {
 	if (tag)
 	{
 		this->name = tag->artist().toCString();
-		this->releases.insert(std::make_shared<release>(tag));
+		this->local_releases.insert(std::make_shared<release>(tag));
 	}
 }
 
@@ -23,6 +25,7 @@ artist::artist (MusicBrainz5::CArtist* a)
 	: id()
 	, name()
 	, releases()
+	, local_releases()
 {
 	if (a)
 	{
@@ -40,6 +43,11 @@ void artist::add_release (const release_ptr_t& release)
 	this->releases.insert(release);
 }
 
+void artist::add_local_release (const release_ptr_t& release)
+{
+	this->local_releases.insert(release);
+}
+
 void artist::clear_releases ()
 {
 	this->releases.clear();
@@ -48,6 +56,11 @@ void artist::clear_releases ()
 void artist::set_id (const std::string& id)
 {
 	this->id = id;
+}
+
+bool artist::has_id () const
+{
+	return !this->id.empty();
 }
 
 bool artist::has_releases () const
