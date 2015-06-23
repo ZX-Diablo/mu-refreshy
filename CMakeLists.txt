@@ -9,7 +9,7 @@ set(mu-refreshy_VERSION_PATCH 0)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY bin)
 
-find_package(Boost REQUIRED COMPONENTS system filesystem)
+find_package(Boost REQUIRED COMPONENTS system filesystem program_options)
 find_package(MusicBrainz5 REQUIRED)
 find_package(TagLib REQUIRED)
 
@@ -23,6 +23,7 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 target_link_libraries(${PROJECT_NAME}
     boost_system
     boost_filesystem
+    boost_program_options
     tag
     musicbrainz5
 )

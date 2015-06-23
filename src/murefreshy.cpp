@@ -1,81 +1,89 @@
 #include <iostream>
 
-#include <boost/filesystem.hpp>
+#include <boost/program_options.hpp>
 
 #include <taglib/fileref.h>
-#include <musicbrainz5/Query.h>
-#include <musicbrainz5/Artist.h>
 
+#include "../include/filescanfactory.h"
 #include "../include/musicdb.h"
 #include "../include/pool.h"
 #include "../include/storage.h"
 #include "../include/artist.h"
 
-typedef boost::filesystem::path path_t;
-typedef boost::filesystem::directory_iterator dit_t;
-
 int main (int argc, char** argv)
 {
-	if (argc < 2)
-	{
-		std::cerr << "Usage: mu-refreshy <path>" << std::endl;
-		return -1;
-	}
+	boost::program_options::positional_options_description pos_flag;
+	pos_flag.add("root", 1);
 	
-	path_t root(argv[1]);
+	boost::program_options::options_description flags("Allowed options");
 	
-	MusicBrainz5::CQuery mb("mu-refreshy-0.0.1");
-	storage db;
-	pool tp(20);
+	flags.add_options()
+		("help,h", "Show this help")
+		("root,r", boost::program_options::value<std::string>()->required(), "Root directory")
+		("scan,s", boost::program_options::value<std::string>()->default_value("all"), "Directory scan method (all|artist|album)")
+	;
+	
+	boost::program_options::command_line_parser parser(argc, argv);
+	boost::program_options::variables_map options;
+	
+	parser.options(flags);
+	parser.positional(pos_flag);
 	
 	try
 	{
-		if (boost::filesystem::exists(root) && boost::filesystem::is_directory(root))
-		{
-			std::cout << "Start scanning " << root << " ..." << std::endl;
-			std::for_each(dit_t(root), dit_t(), [&mb, &db, &tp](const path_t& p)
-			{
-				if (boost::filesystem::is_directory(p))
-				{
-					std::for_each(dit_t(p), dit_t(), [&mb, &db, &tp](const path_t& f)
-					{
-						if (boost::filesystem::is_regular_file(f) && f.extension() == ".mp3")
-						{
-							tp.add_task([&mb, &db, f]()
-							{
-								TagLib::FileRef file(f.c_str());
-								TagLib::Tag* tag = file.tag();
-								
-								artist_ptr_t a = std::make_shared<artist>(tag);
-								if (db.add(a))
-								{
-									MusicBrainz5::CMetadata data = mb.Query("artist", "", "",
-										{ {"query", "artist:\"" + a->get_name() + "\" AND type:group"} });
-									MusicBrainz5::CArtistList* list = data.ArtistList();
-									for (int i = 0; i < list->NumItems(); i++)
-									{
-										MusicBrainz5::CArtist* art = list->Item(i);
-										std::cout << art->Name() << std::endl;
-									}
-								}
-							});
-						}
-					});
-				}
-			});
-			
-			std::cout << "WAITING" << std::endl;
-			tp.wait();
-			
-			std::cout << "PRINTING" << std::endl;
-			db.print_all();
-		}
+		boost::program_options::store(parser.run(), options);
 	}
-	catch (boost::filesystem::filesystem_error& e)
+	catch (boost::program_options::error& e)
 	{
-		std::cerr << "Boost filesystem error: " << e.what() << std::endl;
+		std::cout << e.what() << std::endl;
 		return -1;
 	}
+	
+	if (options.count("root") == 0)
+	{
+		std::cerr << "Must specify root directory" << std::endl << flags;
+		return -1;
+	}
+	
+	ifilescan::path_t root(options["root"].as<std::string>());
+	auto fs = filescanfactory::get(options["scan"].as<std::string>());
+	
+	if (fs == nullptr)
+	{
+		std::cerr << "Invalid scan option" << std::endl << flags;
+		return -1;
+	}
+	
+	std::cout << "Start scanning " << root << "..." << std::endl;
+	
+	auto files = fs->scan(root);
+	
+	std::cout << "Total " << files.size() << " files" << std::endl;
+
+	musicdb mb("mu-refreshy-0.0.1");
+	storage db;
+	pool tp(20);
+	
+	for (auto& it : files)
+	{
+		tp.add_task([&mb, &db, it]()
+		{
+			TagLib::FileRef file(it.c_str());
+			TagLib::Tag* tag = file.tag();
+			
+			artist_ptr_t a = std::make_shared<artist>(tag);
+			if (db.add(a))
+			{
+				mb.fill(a);
+			}
+		});
+	}
+
+	std::cout << "WAITING" << std::endl;
+	tp.wait();
+		
+	std::cout << "PRINTING" << std::endl;
+	db.print_all();
 	
 	return 0;
 }
