@@ -18,11 +18,11 @@ musicdb::~musicdb ()
 
 void musicdb::fill (const artist_ptr_t& artist)
 {
-	if (artist && artist->has_releases())
+	if (artist && artist->has_local_releases())
 	{
 		MusicBrainz5::CMetadata data = this->query.Query("release-group", "", "",
 			{ {"query", "artist:\"" + artist->get_name() + "\" AND releasegroup:\""
-				+ (*artist->get_releases().begin())->get_title() + "\""} });
+				+ (*artist->get_local_releases().begin())->get_title() + "\""} });
 		MusicBrainz5::CReleaseGroupList* releases = data.ReleaseGroupList();
 		
 		if (releases == nullptr || releases->NumItems() == 0)

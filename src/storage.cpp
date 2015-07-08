@@ -63,6 +63,29 @@ void storage::print_all () const
 	auto& index = this->s.get<name_tag_t>();
 	for (auto it = index.begin(); it != index.end(); ++it)
 	{
-		std::cout << (*it)->get_name() << std::endl;
+		auto r = (*it)->get_releases();
+		auto lr = (*it)->get_local_releases();
+		auto jt = r.upper_bound(*lr.rbegin());
+
+		std::cout << "local: " << std::endl;
+		for (auto kt = lr.begin(); kt != lr.end(); ++kt)
+		{
+			std::cout << "\t" << (*kt)->get_date() << "\t" << (*kt)->get_title() << std::endl;
+		}
+		
+		std::cout << "all: " << std::endl;
+		for (auto kt = r.begin(); kt != r.end(); ++kt)
+		{
+			std::cout << "\t" << (*kt)->get_date() << "\t" << (*kt)->get_title() << std::endl;
+		}
+		
+		if (jt != r.end())
+		{
+			std::cout << (*it)->get_name() << std::endl;
+			for (; jt != r.end(); ++jt)
+			{
+				std::cout << "\t" << (*jt)->get_date() << "\t" << (*jt)->get_title() << std::endl;
+			}
+		}
 	}
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <atomic>
 
 #include <boost/program_options.hpp>
 
@@ -21,6 +22,7 @@ int main (int argc, char** argv)
 		("help,h", "Show this help")
 		("root,r", boost::program_options::value<std::string>()->required(), "Root directory")
 		("scan,s", boost::program_options::value<std::string>()->default_value("all"), "Directory scan method (all|artist|album)")
+		("thread,t", boost::program_options::value<unsigned int>()->default_value(8), "Amount of threads")
 	;
 	
 	boost::program_options::command_line_parser parser(argc, argv);
@@ -53,7 +55,7 @@ int main (int argc, char** argv)
 		std::cerr << "Invalid scan option" << std::endl << flags;
 		return -1;
 	}
-	
+
 	std::cout << "Start scanning " << root << "..." << std::endl;
 	
 	auto files = fs->scan(root);
@@ -62,11 +64,12 @@ int main (int argc, char** argv)
 
 	musicdb mb("mu-refreshy-0.0.1");
 	storage db;
-	pool tp(20);
+	pool tp(options["thread"].as<unsigned int>());
+	std::atomic_int counter(0);
 	
 	for (auto& it : files)
 	{
-		tp.add_task([&mb, &db, it]()
+		tp.add_task([&mb, &db, &counter, it]()
 		{
 			TagLib::FileRef file(it.c_str());
 			TagLib::Tag* tag = file.tag();
@@ -75,14 +78,24 @@ int main (int argc, char** argv)
 			if (db.add(a))
 			{
 				mb.fill(a);
+				db.replace(a);
 			}
+			else
+			{
+				auto main = db.get_by_name(a->get_name());
+				main->add_local_release(*a->get_local_releases().begin());
+				db.replace(main);
+			}
+			
+			counter++;
+			std::cout << "\rDone: " << counter;
 		});
 	}
 
 	std::cout << "WAITING" << std::endl;
 	tp.wait();
 		
-	std::cout << "PRINTING" << std::endl;
+	std::cout << std::endl << "PRINTING" << std::endl;
 	db.print_all();
 	
 	return 0;

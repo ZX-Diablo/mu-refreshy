@@ -23,10 +23,12 @@ public:
 	
 	bool has_id () const;
 	bool has_releases () const;
+	bool has_local_releases () const;
 	
 	const std::string& get_id () const;
 	const std::string& get_name () const;
 	const release_set_t& get_releases () const;
+	const release_set_t& get_local_releases () const;
 	
 private:
 	std::string id;

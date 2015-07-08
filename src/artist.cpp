@@ -65,7 +65,12 @@ bool artist::has_id () const
 
 bool artist::has_releases () const
 {
-	return this->releases.size() > 0;
+	return !this->releases.empty();
+}
+
+bool artist::has_local_releases () const
+{
+	return !this->local_releases.empty();
 }
 
 const std::string& artist::get_id () const
@@ -81,4 +86,9 @@ const std::string& artist::get_name () const
 const release_set_t& artist::get_releases () const
 {
 	return this->releases;
+}
+
+const release_set_t& artist::get_local_releases () const
+{
+	return this->local_releases;
 }

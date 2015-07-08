@@ -64,7 +64,7 @@ const date& release::get_date () const
 
 bool operator< (const release& lhs, const release& rhs)
 {
-	if (lhs.get_id() == rhs.get_id())
+	if (!lhs.get_id().empty() && !rhs.get_id().empty() && lhs.get_id() == rhs.get_id())
 	{
 		return false;
 	}

@@ -1,11 +1,14 @@
 #include "../include/date.h"
 
 #include <ctime>
+#include <sstream>
+#include <string.h>
 
 date::date (unsigned int year, unsigned int month, unsigned int day)
 	: datetime()
 {
 	struct tm timeinfo;
+	memset(&timeinfo, 0, sizeof(timeinfo));
 		
 	timeinfo.tm_year = (year >= 1900 ? year - 1900 : 0);
 	timeinfo.tm_mon = (month > 0 ? month - 1 : 0);
@@ -18,6 +21,7 @@ date::date (const std::string& d)
 	: datetime()
 {
 	struct tm timeinfo;
+	memset(&timeinfo, 0, sizeof(timeinfo));
 	
 	if (!d.empty())
 	{
@@ -89,6 +93,17 @@ date& date::operator= (date&& other)
 	return *this;
 }
 
+std::string date::to_string () const
+{
+	std::time_t t = std::chrono::system_clock::to_time_t(this->datetime);
+	struct tm* timeinfo = localtime(&t);
+	std::stringstream ss;
+	
+	ss << (timeinfo->tm_year + 1900) << "-" << (timeinfo->tm_mon + 1) << "-" << timeinfo->tm_mday;
+	
+	return ss.str();
+}
+
 const date::datetime_t& date::get () const
 {
 	return this->datetime;
@@ -97,4 +112,9 @@ const date::datetime_t& date::get () const
 bool operator< (const date& lhs, const date& rhs)
 {
 	return lhs.get() < rhs.get();
+}
+
+std::ostream& operator<< (std::ostream& out, const date& d)
+{
+	return out << d.to_string();
 }
