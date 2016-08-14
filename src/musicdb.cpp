@@ -30,7 +30,7 @@ void musicdb::fill (const artist_ptr_t& artist)
 			return;
 		}
 		
-		MusicBrainz5::CReleaseGroup* rg = rg = releases->Item(0);
+		MusicBrainz5::CReleaseGroup* rg = releases->Item(0);
 		MusicBrainz5::CArtistCredit* artist_credit = rg->ArtistCredit();
 		
 		if (artist_credit == nullptr || artist_credit->NameCreditList() == nullptr || artist_credit->NameCreditList()->NumItems() == 0)
@@ -63,7 +63,7 @@ void musicdb::fill (const artist_ptr_t& artist)
 		}
 		
 		artist->clear_releases();
-		for (unsigned int i = 0; i < releases->NumItems(); i++)
+		for (unsigned int i = 0; i < static_cast<unsigned int>(releases->NumItems()); i++)
 		{
 			rg = releases->Item(i);
 			artist->add_release(std::make_shared<release>(rg));
