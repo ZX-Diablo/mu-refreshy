@@ -1,4 +1,4 @@
-#include <pool.h>
+#include <thread/pool.h>
 
 pool::pool (unsigned int size)
 	: io()

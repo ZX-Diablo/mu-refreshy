@@ -6,7 +6,7 @@
 #include <taglib/fileref.h>
 
 #include <filescan/filescanfactory.h>
-#include <pool.h>
+#include <thread/pool.h>
 #include <data/artist.h>
 #include <storage/musicdb.h>
 #include <storage/storage.h>
