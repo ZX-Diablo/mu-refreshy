@@ -1,4 +1,4 @@
-#include "../include/pool.h"
+#include <pool.h>
 
 pool::pool (unsigned int size)
 	: io()
@@ -34,9 +34,9 @@ void pool::init_threads ()
 {
 	for (unsigned int i = 0; i < this->size; i++)
 	{
-		this->threads.push_back(std::thread(
+		this->threads.emplace_back(
 			std::bind<std::size_t (boost::asio::io_service::*)()>(&boost::asio::io_service::run, &this->io)
-		));
+		);
 	}
 }
 
