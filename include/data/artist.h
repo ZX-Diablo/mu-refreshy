@@ -1,6 +1,6 @@
 #pragma once
 
-#include "release.h"
+#include <data/release.h>
 
 #include <memory>
 

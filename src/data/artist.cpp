@@ -1,4 +1,4 @@
-#include "../include/artist.h"
+#include <data/artist.h>
 
 artist::artist (const std::string& id, const std::string& name)
 	: id(id)

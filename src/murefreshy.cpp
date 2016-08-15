@@ -6,10 +6,10 @@
 #include <taglib/fileref.h>
 
 #include <filescan/filescanfactory.h>
-#include "../include/musicdb.h"
-#include "../include/pool.h"
-#include "../include/storage.h"
-#include "../include/artist.h"
+#include <musicdb.h>
+#include <pool.h>
+#include <storage.h>
+#include <data/artist.h>
 
 int main (int argc, char** argv)
 {

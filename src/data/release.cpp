@@ -1,6 +1,4 @@
-#include "../include/release.h"
-
-#include <sstream>
+#include <data/release.h>
 
 release::release (const std::string& id, const std::string& title, const std::string& type, const date& d)
 	: id(id)

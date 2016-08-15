@@ -1,4 +1,4 @@
-#include "../include/storage.h"
+#include <storage.h>
 
 storage::storage ()
 	: s()

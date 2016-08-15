@@ -1,4 +1,4 @@
-#include "../include/musicdb.h"
+#include <musicdb.h>
 
 #include <musicbrainz5/Artist.h>
 #include <musicbrainz5/ArtistCredit.h>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "artist.h"
+#include <data/artist.h>
 
 #include <string>
 

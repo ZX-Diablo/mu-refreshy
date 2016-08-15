@@ -1,6 +1,6 @@
 #pragma once
 
-#include "artist.h"
+#include <data/artist.h>
 
 #include <boost/multi_index_container.hpp>
 #include <boost/multi_index/ordered_index.hpp>
