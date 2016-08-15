@@ -62,7 +62,7 @@ int main (int argc, char** argv)
 	
 	std::cout << "Total " << files.size() << " files" << std::endl;
 
-	musicdb mb("mu-refreshy-0.1.1");
+	musicdb mb("mu-refreshy/0.1.1 (https://github.com/ZX-Diablo/mu-refreshy)");
 	storage db;
 	pool tp(options["thread"].as<unsigned int>());
 	std::atomic_int counter(0);
