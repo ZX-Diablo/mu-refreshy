@@ -1,7 +1,7 @@
-#include "../include/filescanfactory.h"
-#include "../include/allfilescan.h"
-#include "../include/artistfilescan.h"
-#include "../include/artistalbumfilescan.h"
+#include <filescan/filescanfactory.h>
+#include <filescan/allfilescan.h>
+#include <filescan/artistfilescan.h>
+#include <filescan/artistalbumfilescan.h>
 
 filescanfactory::ifilescan_t filescanfactory::get (const std::string& type)
 {

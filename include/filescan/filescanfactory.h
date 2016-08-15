@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ifilescan.h"
+#include <filescan/ifilescan.h>
 
 #include <memory>
 #include <string>

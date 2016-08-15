@@ -1,12 +1,4 @@
-#include "../include/artistfilescan.h"
-
-artistfilescan::artistfilescan ()
-{
-}
-
-artistfilescan::~artistfilescan ()
-{
-}
+#include <filescan/artistfilescan.h>
 
 ifilescan::path_list_t artistfilescan::scan (const path_t& root)
 {

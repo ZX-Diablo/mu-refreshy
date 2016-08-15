@@ -23,7 +23,11 @@ find_package(Boost REQUIRED COMPONENTS system filesystem program_options)
 find_package(MusicBrainz5 REQUIRED)
 find_package(TagLib REQUIRED)
 
-file(GLOB sources "src/*.cpp")
+file(GLOB_RECURSE sources "src/*.cpp")
+
+include_directories(
+	${CMAKE_SOURCE_DIR}/include
+)
 
 add_executable(${PROJECT_NAME} ${sources})
 
@@ -31,11 +35,11 @@ set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD_REQUIRED ON)
 
 target_link_libraries(${PROJECT_NAME}
-    boost_system
-    boost_filesystem
-    boost_program_options
-    tag
-    musicbrainz5
+	boost_system
+	boost_filesystem
+	boost_program_options
+	tag
+	musicbrainz5
 )
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_PREFIX}/bin)

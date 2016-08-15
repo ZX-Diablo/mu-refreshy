@@ -1,12 +1,4 @@
-#include "../include/allfilescan.h"
-
-allfilescan::allfilescan ()
-{
-}
-
-allfilescan::~allfilescan ()
-{
-}
+#include <filescan/allfilescan.h>
 
 ifilescan::path_list_t allfilescan::scan (const path_t& root)
 {

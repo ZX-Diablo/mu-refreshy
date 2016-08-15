@@ -11,7 +11,7 @@ public:
 	typedef std::list<path_t> path_list_t;
 	
 public:
-	virtual ~ifilescan () {};
+	virtual ~ifilescan () = default;
 	
 	virtual path_list_t scan (const path_t& root) = 0;
 	
