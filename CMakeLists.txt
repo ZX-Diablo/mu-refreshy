@@ -4,7 +4,7 @@ project(mu-refreshy)
 
 set(mu-refreshy_VERSION_MAJOR 0)
 set(mu-refreshy_VERSION_MINOR 1)
-set(mu-refreshy_VERSION_PATCH 1)
+set(mu-refreshy_VERSION_PATCH 2)
 set(mu-refreshy_VERSION ${mu-refreshy_VERSION_MAJOR}.${mu-refreshy_VERSION_MINOR}.${mu-refreshy_VERSION_PATCH})
 
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
