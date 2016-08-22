@@ -17,7 +17,7 @@ release::release (TagLib::Tag* tag)
 	if (tag)
 	{
 		this->title = tag->album().toCString();
-		this->d = date(tag->year());
+		this->d = date(std::to_string(tag->year()));
 	}
 }
 
