@@ -51,13 +51,13 @@ set(BUILD_LIBRARIES
 
 # Build
 
-file(GLOB_RECURSE sources "src/*.cpp")
+file(GLOB_RECURSE sources "src/*/*.cpp")
 
 include_directories(
 	${CMAKE_SOURCE_DIR}/include
 )
 
-add_executable(${PROJECT_NAME} ${sources})
+add_executable(${PROJECT_NAME} ${sources} "src/murefreshy.cpp")
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	CXX_STANDARD 11
 	CXX_STANDARD_REQUIRED ON
@@ -79,7 +79,7 @@ if(BUILD_TESTS)
 			set(test_name "${test_path}_${test_name}")
 		endif()
 
-		add_executable(${test_name} ${test_file}) # TODO: add sources
+		add_executable(${test_name} ${test_file} ${sources}) # TODO: Bad, remake to use static libraries
 		target_compile_definitions(${test_name} PRIVATE "BOOST_TEST_DYN_LINK=1")
 		target_link_libraries(${test_name} ${BUILD_LIBRARIES} boost_unit_test_framework)
 		set_target_properties(${test_name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests)
