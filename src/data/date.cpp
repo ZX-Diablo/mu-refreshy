@@ -1,7 +1,9 @@
 #include <data/date.h>
 
+const std::string date::default_date = "1970-01-01";
+
 date::date (const std::string& d)
-	: d(!d.empty() ? d : "1970-01-01")
+	: d(!d.empty() ? d : date::default_date)
 {
 	std::string::size_type pos = this->d.find("-");
 

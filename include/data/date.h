@@ -6,6 +6,9 @@
 class date
 {
 public:
+	static const std::string default_date;
+
+public:
 	date (const std::string& d = std::string());
 	date (const date& other);
 	date (date&& other);
