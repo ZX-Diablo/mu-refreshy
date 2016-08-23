@@ -36,10 +36,6 @@ release::release (MusicBrainz5::CReleaseGroup* rg)
 	}
 }
 
-release::~release ()
-{
-}
-
 const std::string& release::get_id () const
 {
 	return this->id;
