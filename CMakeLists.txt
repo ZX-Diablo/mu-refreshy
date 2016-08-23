@@ -35,6 +35,7 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 set(BOOST_REQUIRED_LIBS system filesystem program_options)
 if(BUILD_TESTS)
 	set(BOOST_REQUIRED_LIBS ${BOOST_REQUIRED_LIBS} unit_test_framework)
+	find_package(FakeIt REQUIRED)
 endif()
 
 find_package(Boost REQUIRED COMPONENTS ${BOOST_REQUIRED_LIBS})
@@ -67,6 +68,7 @@ target_link_libraries(${PROJECT_NAME} ${BUILD_LIBRARIES})
 # Tests
 
 if(BUILD_TESTS)
+	include_directories(${FAKEIT_INCLUDE_DIRS})
 	enable_testing()
 	file(GLOB_RECURSE tests "tests/*.cpp")
 	foreach(test_file ${tests})
