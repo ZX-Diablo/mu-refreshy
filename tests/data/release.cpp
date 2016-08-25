@@ -1,5 +1,6 @@
 #define BOOST_TEST_MODULE data_release_test
 #include <boost/test/unit_test.hpp>
+#include <boost/test/data/test_case.hpp>
 
 #include <data/release.h>
 #include <fakeit.hpp>
@@ -84,6 +85,7 @@ BOOST_AUTO_TEST_SUITE(constructors);
 	BOOST_AUTO_TEST_CASE(release_group)
 	{
 		// Can't fake MusicBrainz5::CReleaseGroup
+		// TODO: rewrite using some kind of Tag class
 	}
 BOOST_AUTO_TEST_SUITE_END();
 
@@ -93,5 +95,40 @@ BOOST_AUTO_TEST_SUITE(ordering);
 		release r1(std::string(), std::string(), std::string(), RELEASE_DATE);
 		release r2(std::string(), std::string(), std::string(), RELEASE_DATE_PREV_DAY);
 		BOOST_TEST(r2 < r1);
+	}
+
+	BOOST_AUTO_TEST_CASE(different_ids)
+	{
+		release r1(RELEASE_ID, std::string(), std::string(), RELEASE_DATE);
+		release r2(RELEASE_ID_OTHER, std::string(), std::string(), RELEASE_DATE_PREV_DAY);
+		BOOST_TEST(r2 < r1);
+	}
+
+	BOOST_AUTO_TEST_CASE(equal_ids)
+	{
+		release r1(RELEASE_ID, std::string(), std::string(), RELEASE_DATE);
+		release r2(RELEASE_ID, std::string(), std::string(), RELEASE_DATE_PREV_DAY);
+		BOOST_TEST(!(r2 < r1));
+	}
+
+	BOOST_AUTO_TEST_CASE(equal_dates)
+	{
+		release r1(std::string(), std::string(), std::string(), RELEASE_DATE);
+		release r2(std::string(), std::string(), std::string(), RELEASE_DATE);
+		BOOST_TEST(!(r2 < r1));
+	}
+
+	BOOST_DATA_TEST_CASE(prev_dates, boost::unit_test::data::make(PREV_DATES))
+	{
+		release r1(std::string(), std::string(), std::string(), RELEASE_DATE);
+		release r2(std::string(), std::string(), std::string(), sample);
+		BOOST_TEST(r2 < r1);
+	}
+
+	BOOST_DATA_TEST_CASE(next_dates, boost::unit_test::data::make(NEXT_DATES))
+	{
+		release r1(std::string(), std::string(), std::string(), RELEASE_DATE);
+		release r2(std::string(), std::string(), std::string(), sample);
+		BOOST_TEST(!(r2 < r1));
 	}
 BOOST_AUTO_TEST_SUITE_END();
