@@ -85,7 +85,6 @@ BOOST_AUTO_TEST_SUITE(constructors);
 	BOOST_AUTO_TEST_CASE(release_group)
 	{
 		// Can't fake MusicBrainz5::CReleaseGroup
-		// TODO: rewrite using some kind of Tag class
 	}
 BOOST_AUTO_TEST_SUITE_END();
 

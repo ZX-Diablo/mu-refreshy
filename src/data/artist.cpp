@@ -34,18 +34,20 @@ artist::artist (MusicBrainz5::CArtist* a)
 	}
 }
 
-artist::~artist ()
-{
-}
-
 void artist::add_release (const release_ptr_t& release)
 {
-	this->releases.insert(release);
+	if (release)
+	{
+		this->releases.insert(release);
+	}
 }
 
 void artist::add_local_release (const release_ptr_t& release)
 {
-	this->local_releases.insert(release);
+	if (release)
+	{
+		this->local_releases.insert(release);
+	}
 }
 
 void artist::clear_releases ()
