@@ -2,18 +2,14 @@
 #include <boost/test/unit_test.hpp>
 
 #include <filescan/filescanfactory.h>
-
-#include "filescan/allfilescan.h"
-#include "data/artist.h"
-#include "filescan/artistfilescan.h"
-#include "filescan/artistalbumfilescan.h"
+#include <filescan/allfilescan.h>
+#include <filescan/artistfilescan.h>
+#include <filescan/artistalbumfilescan.h>
 
 const std::string FILESCAN_UNKNOWN = "unknown";
 const std::string FILESCAN_ALL = "all";
 const std::string FILESCAN_ARTIST = "artist";
 const std::string FILESCAN_ALBUM = "album";
-
-BOOST_TEST_DONT_PRINT_LOG_VALUE(filescanfactory::ifilescan_t);
 
 BOOST_AUTO_TEST_SUITE(get);
 	BOOST_AUTO_TEST_CASE(get_empty)
