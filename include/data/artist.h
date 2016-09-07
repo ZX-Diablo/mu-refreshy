@@ -8,6 +8,7 @@ class artist
 {
 public:
 	artist (const std::string& id, const std::string& name);
+	artist (const release_set_t& releases, const release_set_t& local_releases);
 
 	void add_release (const release_ptr_t& release);
 	void add_local_release (const release_ptr_t& release);

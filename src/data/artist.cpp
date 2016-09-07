@@ -9,6 +9,14 @@ artist::artist (const std::string& id, const std::string& name)
 {
 }
 
+artist::artist (const release_set_t& releases, const release_set_t& local_releases)
+	: id()
+	, name()
+	, releases(releases)
+	, local_releases(local_releases)
+{
+}
+
 void artist::add_release (const release_ptr_t& release)
 {
 	if (release)
