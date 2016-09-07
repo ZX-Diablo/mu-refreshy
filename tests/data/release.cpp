@@ -3,7 +3,6 @@
 #include <boost/test/data/test_case.hpp>
 
 #include <data/release.h>
-#include <fakeit.hpp>
 #include <list>
 
 const std::string RELEASE_ID = "A123";
