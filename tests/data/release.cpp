@@ -23,8 +23,6 @@ typedef std::list<std::string> string_list_t;
 const string_list_t PREV_DATES = { RELEASE_DATE_PREV_YEAR, RELEASE_DATE_PREV_MONTH, RELEASE_DATE_PREV_DAY };
 const string_list_t NEXT_DATES = { RELEASE_DATE_NEXT_YEAR, RELEASE_DATE_NEXT_MONTH, RELEASE_DATE_NEXT_DAY };
 
-BOOST_TEST_DONT_PRINT_LOG_VALUE(release); // Note: write release printing?
-
 BOOST_AUTO_TEST_SUITE(constructors);
 	BOOST_AUTO_TEST_CASE(empty)
 	{

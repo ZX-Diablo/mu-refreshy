@@ -3,6 +3,7 @@
 #include <data/date.h>
 
 #include <string>
+#include <ostream>
 #include <memory>
 #include <set>
 
@@ -24,6 +25,7 @@ private:
 };
 
 bool operator< (const release& lhs, const release& rhs);
+std::ostream& operator<< (std::ostream& out, const release& r);
 
 typedef std::shared_ptr<release> release_ptr_t;
 

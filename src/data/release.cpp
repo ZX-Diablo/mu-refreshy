@@ -38,6 +38,11 @@ bool operator< (const release& lhs, const release& rhs)
 	return lhs.get_date() < rhs.get_date();
 }
 
+std::ostream& operator<< (std::ostream& out, const release& r)
+{
+	return out << r.get_date() << " " << r.get_title();
+}
+
 bool release_comparator::operator() (const release_ptr_t& lhs, const release_ptr_t& rhs)
 {
 	if (lhs == nullptr || rhs == nullptr)
