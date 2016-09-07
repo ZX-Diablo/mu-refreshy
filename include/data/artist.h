@@ -4,15 +4,10 @@
 
 #include <memory>
 
-#include <taglib/tag.h>
-#include <musicbrainz5/Artist.h>
-
 class artist
 {
 public:
 	artist (const std::string& id, const std::string& name);
-	artist (TagLib::Tag* tag);
-	artist (MusicBrainz5::CArtist* a);
 
 	void add_release (const release_ptr_t& release);
 	void add_local_release (const release_ptr_t& release);

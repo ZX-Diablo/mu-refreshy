@@ -1,5 +1,7 @@
 #include <storage/storage.h>
 
+#include <iostream>
+
 storage::storage ()
 	: s()
 	, m()

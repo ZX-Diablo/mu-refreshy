@@ -9,32 +9,6 @@ artist::artist (const std::string& id, const std::string& name)
 {
 }
 
-artist::artist (TagLib::Tag* tag)
-	: id()
-	, name()
-	, releases()
-	, local_releases()
-{
-	if (tag)
-	{
-		this->name = tag->artist().toCString();
-		this->local_releases.insert(releasefactory::get(tag));
-	}
-}
-
-artist::artist (MusicBrainz5::CArtist* a)
-	: id()
-	, name()
-	, releases()
-	, local_releases()
-{
-	if (a)
-	{
-		this->id = a->ID();
-		this->name = a->Name();
-	}
-}
-
 void artist::add_release (const release_ptr_t& release)
 {
 	if (release)

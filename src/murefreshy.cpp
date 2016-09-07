@@ -7,7 +7,7 @@
 
 #include <filescan/filescanfactory.h>
 #include <thread/pool.h>
-#include <data/artist.h>
+#include <data/artistfactory.h>
 #include <storage/musicdb.h>
 #include <storage/storage.h>
 
@@ -74,7 +74,7 @@ int main (int argc, char** argv)
 			TagLib::FileRef file(it.c_str());
 			TagLib::Tag* tag = file.tag();
 			
-			artist_ptr_t a = std::make_shared<artist>(tag);
+			artist_ptr_t a = artistfactory::get(tag);
 			if (db.add(a))
 			{
 				mb.fill(a);
