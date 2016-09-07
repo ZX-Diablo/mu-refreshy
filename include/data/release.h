@@ -6,15 +6,10 @@
 #include <memory>
 #include <set>
 
-#include <taglib/tag.h>
-#include <musicbrainz5/ReleaseGroup.h>
-
 class release
 {
 public:
 	release (const std::string& id, const std::string& title, const std::string& type, const date& d);
-	release (TagLib::Tag* tag);
-	release (MusicBrainz5::CReleaseGroup* rg);
 
 	const std::string& get_id () const;
 	const std::string& get_title () const;

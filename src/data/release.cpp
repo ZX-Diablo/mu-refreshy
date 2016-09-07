@@ -8,34 +8,6 @@ release::release (const std::string& id, const std::string& title, const std::st
 {
 }
 
-release::release (TagLib::Tag* tag)
-	: id()
-	, title()
-	, type()
-	, d()
-{
-	if (tag)
-	{
-		this->title = tag->album().toCString();
-		this->d = date(std::to_string(tag->year()));
-	}
-}
-
-release::release (MusicBrainz5::CReleaseGroup* rg)
-	: id()
-	, title()
-	, type()
-	, d()
-{
-	if (rg)
-	{
-		this->id = rg->ID();
-		this->title = rg->Title();
-		this->type = rg->PrimaryType();
-		this->d = date(rg->FirstReleaseDate());
-	}
-}
-
 const std::string& release::get_id () const
 {
 	return this->id;

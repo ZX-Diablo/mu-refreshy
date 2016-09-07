@@ -1,5 +1,7 @@
 #include <storage/musicdb.h>
 
+#include <data/releasefactory.h>
+
 #include <musicbrainz5/Artist.h>
 #include <musicbrainz5/ArtistCredit.h>
 #include <musicbrainz5/NameCredit.h>
@@ -66,7 +68,7 @@ void musicdb::fill (const artist_ptr_t& artist)
 		for (unsigned int i = 0; i < static_cast<unsigned int>(releases->NumItems()); i++)
 		{
 			rg = releases->Item(i);
-			artist->add_release(std::make_shared<release>(rg));
+			artist->add_release(releasefactory::get(rg));
 		}
 	}
 }

@@ -1,4 +1,5 @@
 #include <data/artist.h>
+#include <data/releasefactory.h>
 
 artist::artist (const std::string& id, const std::string& name)
 	: id(id)
@@ -17,7 +18,7 @@ artist::artist (TagLib::Tag* tag)
 	if (tag)
 	{
 		this->name = tag->artist().toCString();
-		this->local_releases.insert(std::make_shared<release>(tag));
+		this->local_releases.insert(releasefactory::get(tag));
 	}
 }
 
