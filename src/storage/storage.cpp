@@ -67,26 +67,30 @@ void storage::print_all (std::ostream& stream) const
 	{
 		auto r = (*it)->get_releases();
 		auto lr = (*it)->get_local_releases();
-		auto jt = r.upper_bound(*lr.rbegin());
 
-		stream << "local: " << std::endl;
-		for (auto kt = lr.begin(); kt != lr.end(); ++kt)
+		if (!r.empty() && !lr.empty())
 		{
-			stream << "\t" << **kt << std::endl;
-		}
+			auto jt = r.upper_bound(*lr.rbegin());
 
-		stream << "all: " << std::endl;
-		for (auto kt = r.begin(); kt != r.end(); ++kt)
-		{
-			stream << "\t" << **kt << std::endl;
-		}
-
-		if (jt != r.end())
-		{
-			stream << (*it)->get_name() << std::endl;
-			for (; jt != r.end(); ++jt)
+			stream << "local: " << std::endl;
+			for (auto kt = lr.begin(); kt != lr.end(); ++kt)
 			{
-				stream << "\t" << **jt << std::endl;
+				stream << "\t" << **kt << std::endl;
+			}
+
+			stream << "all: " << std::endl;
+			for (auto kt = r.begin(); kt != r.end(); ++kt)
+			{
+				stream << "\t" << **kt << std::endl;
+			}
+
+			if (jt != r.end())
+			{
+				stream << (*it)->get_name() << std::endl;
+				for (; jt != r.end(); ++jt)
+				{
+					stream << "\t" << **jt << std::endl;
+				}
 			}
 		}
 	}
