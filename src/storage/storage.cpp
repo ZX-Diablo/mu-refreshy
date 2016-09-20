@@ -60,7 +60,7 @@ artist_ptr_t storage::get_by_id (const std::string& id) const
 	return (it != index.end() ? (*it) : nullptr);
 }
 
-void storage::print_all () const
+void storage::print_all (std::ostream& stream) const
 {
 	auto& index = this->s.get<name_tag_t>();
 	for (auto it = index.begin(); it != index.end(); ++it)
@@ -69,24 +69,24 @@ void storage::print_all () const
 		auto lr = (*it)->get_local_releases();
 		auto jt = r.upper_bound(*lr.rbegin());
 
-		std::cout << "local: " << std::endl;
+		stream << "local: " << std::endl;
 		for (auto kt = lr.begin(); kt != lr.end(); ++kt)
 		{
-			std::cout << "\t" << **kt << std::endl;
+			stream << "\t" << **kt << std::endl;
 		}
 
-		std::cout << "all: " << std::endl;
+		stream << "all: " << std::endl;
 		for (auto kt = r.begin(); kt != r.end(); ++kt)
 		{
-			std::cout << "\t" << **kt << std::endl;
+			stream << "\t" << **kt << std::endl;
 		}
 
 		if (jt != r.end())
 		{
-			std::cout << (*it)->get_name() << std::endl;
+			stream << (*it)->get_name() << std::endl;
 			for (; jt != r.end(); ++jt)
 			{
-				std::cout << "\t" << **jt << std::endl;
+				stream << "\t" << **jt << std::endl;
 			}
 		}
 	}

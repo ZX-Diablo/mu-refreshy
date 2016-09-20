@@ -96,7 +96,7 @@ int main (int argc, char** argv)
 	tp.wait();
 		
 	std::cout << std::endl << "PRINTING" << std::endl;
-	db.print_all();
+	db.print_all(std::cout);
 	
 	return 0;
 }

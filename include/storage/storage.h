@@ -7,21 +7,22 @@
 #include <boost/multi_index/mem_fun.hpp>
 
 #include <mutex>
+#include <ostream>
 
 class storage
 {
 public:
 	storage ();
 	~storage ();
-	
+
 	bool add (const artist_ptr_t& artist);
 	bool replace (const artist_ptr_t& artist);
-	
+
 	artist_ptr_t get_by_name (const std::string& name) const;
 	artist_ptr_t get_by_id (const std::string& id) const;
-	
-	void print_all () const;
-	
+
+	void print_all (std::ostream& stream) const;
+
 private:
 	struct id_tag_t {};
 	struct name_tag_t {};
