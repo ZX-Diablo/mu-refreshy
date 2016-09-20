@@ -8,6 +8,16 @@ storage::storage ()
 {
 }
 
+storage::storage (const artist_ptr_t& artist)
+	: s()
+	, m()
+{
+	if (artist)
+	{
+		this->s.insert(artist);
+	}
+}
+
 storage::~storage ()
 {
 }

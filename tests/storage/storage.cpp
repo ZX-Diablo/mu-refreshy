@@ -24,6 +24,21 @@ BOOST_AUTO_TEST_SUITE(constructor);
 		s.print_all(ss);
 		BOOST_TEST(ss.str().empty());
 	}
+
+	BOOST_AUTO_TEST_CASE(empty_nullptr)
+	{
+		storage s(nullptr);
+		std::stringstream ss;
+		s.print_all(ss);
+		BOOST_TEST(ss.str().empty());
+	}
+
+	BOOST_AUTO_TEST_CASE(with_artist)
+	{
+		storage s(ARTIST);
+		BOOST_TEST(s.get_by_id(ARTIST_ID) == ARTIST);
+		BOOST_TEST(s.get_by_name(ARTIST_NAME) == ARTIST);
+	}
 BOOST_AUTO_TEST_SUITE_END();
 
 BOOST_AUTO_TEST_SUITE(add);
@@ -43,8 +58,7 @@ BOOST_AUTO_TEST_SUITE(add);
 
 	BOOST_AUTO_TEST_CASE(add_non_unique_full_same)
 	{
-		storage s;
-		s.add(ARTIST); // TODO: create storage with given data?
+		storage s(ARTIST);
 		BOOST_TEST(!s.add(ARTIST));
 		BOOST_TEST(s.get_by_id(ARTIST_ID) == ARTIST);
 		BOOST_TEST(s.get_by_name(ARTIST_NAME) == ARTIST);
@@ -52,8 +66,7 @@ BOOST_AUTO_TEST_SUITE(add);
 
 	BOOST_AUTO_TEST_CASE(add_non_unique_id_same)
 	{
-		storage s;
-		s.add(ARTIST);
+		storage s(ARTIST);
 		BOOST_TEST(s.add(ARTIST_SAME_ID));
 		BOOST_TEST(s.get_by_id(ARTIST_ID) == ARTIST);
 		BOOST_TEST(s.get_by_name(ARTIST_NAME) == ARTIST);
@@ -62,8 +75,7 @@ BOOST_AUTO_TEST_SUITE(add);
 
 	BOOST_AUTO_TEST_CASE(add_non_unique_name_same)
 	{
-		storage s;
-		s.add(ARTIST);
+		storage s(ARTIST);
 		BOOST_TEST(!s.add(ARTIST_SAME_NAME));
 		BOOST_TEST(s.get_by_id(ARTIST_ID) == ARTIST);
 		BOOST_TEST(s.get_by_name(ARTIST_NAME) == ARTIST);
@@ -80,8 +92,7 @@ BOOST_AUTO_TEST_SUITE(replace);
 
 	BOOST_AUTO_TEST_CASE(replace_unique)
 	{
-		storage s;
-		s.add(ARTIST);
+		storage s(ARTIST);
 		BOOST_TEST(!s.replace(ARTIST_OTHER));
 		BOOST_TEST(s.get_by_id(ARTIST_ID) == ARTIST);
 		BOOST_TEST(s.get_by_name(ARTIST_NAME) == ARTIST);
@@ -91,8 +102,7 @@ BOOST_AUTO_TEST_SUITE(replace);
 
 	BOOST_AUTO_TEST_CASE(replace_non_unique_full_same)
 	{
-		storage s;
-		s.add(ARTIST);
+		storage s(ARTIST);
 		BOOST_TEST(s.replace(ARTIST));
 		BOOST_TEST(s.get_by_id(ARTIST_ID) == ARTIST);
 		BOOST_TEST(s.get_by_name(ARTIST_NAME) == ARTIST);
@@ -100,8 +110,7 @@ BOOST_AUTO_TEST_SUITE(replace);
 
 	BOOST_AUTO_TEST_CASE(replace_non_unique_id_same)
 	{
-		storage s;
-		s.add(ARTIST);
+		storage s(ARTIST);
 		BOOST_TEST(!s.replace(ARTIST_SAME_ID));
 		BOOST_TEST(s.get_by_id(ARTIST_ID) == ARTIST);
 		BOOST_TEST(s.get_by_name(ARTIST_NAME) == ARTIST);
@@ -110,8 +119,7 @@ BOOST_AUTO_TEST_SUITE(replace);
 
 	BOOST_AUTO_TEST_CASE(replace_non_unique_name_same)
 	{
-		storage s;
-		s.add(ARTIST);
+		storage s(ARTIST);
 		BOOST_TEST(s.replace(ARTIST_SAME_NAME));
 		BOOST_TEST(!s.get_by_id(ARTIST_ID));
 		BOOST_TEST(s.get_by_id(ARTIST_OTHER_ID) == ARTIST_SAME_NAME);

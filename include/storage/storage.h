@@ -13,6 +13,7 @@ class storage
 {
 public:
 	storage ();
+	storage (const artist_ptr_t& artist);
 	~storage ();
 
 	bool add (const artist_ptr_t& artist);
