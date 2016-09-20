@@ -33,17 +33,20 @@ bool storage::add (const artist_ptr_t& artist)
 
 bool storage::replace (const artist_ptr_t& artist)
 {
-	lock_t lock(this->m);
-	
-	auto& index = this->s.get<name_tag_t>();
-	auto it = index.find(artist->get_name());
-	
-	if (it != index.end())
+	if (artist)
 	{
-		index.replace(it, artist);
-		return true;
+		lock_t lock(this->m);
+
+		auto& index = this->s.get<name_tag_t>();
+		auto it = index.find(artist->get_name());
+
+		if (it != index.end())
+		{
+			index.replace(it, artist);
+			return true;
+		}
 	}
-	
+
 	return false;
 }
 
