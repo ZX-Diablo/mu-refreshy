@@ -3,6 +3,7 @@
 #include <data/release.h>
 
 #include <memory>
+#include <list>
 
 class artist
 {
@@ -34,3 +35,4 @@ private:
 };
 
 typedef std::shared_ptr<artist> artist_ptr_t;
+typedef std::list<artist_ptr_t> artist_list_t;
