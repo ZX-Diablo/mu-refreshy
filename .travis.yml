@@ -9,7 +9,7 @@ addons:
                 - libboost-filesystem-dev
                 - libboost-program-options-dev
                 - libboost-test-dev
-                - libmusicbrainz4-dev
+                - libmusicbrainz5-dev
                 - libtag1-dev
 script:
 - mkdir build && cd build
