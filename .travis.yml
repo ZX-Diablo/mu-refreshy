@@ -7,10 +7,10 @@ addons:
                 sources:
                 - sourceline: 'ppa:ginggs/boost161'
                 packages:
-                - libboost-system-dev
-                - libboost-filesystem-dev
-                - libboost-program-options-dev
-                - libboost-test-dev
+                - libboost-system1.61-dev
+                - libboost-filesystem1.61-dev
+                - libboost-program-options1.61-dev
+                - libboost-test1.61-dev
                 - libmusicbrainz5-dev
                 - libtag1-dev
 script:
