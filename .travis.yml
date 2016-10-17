@@ -4,6 +4,8 @@ language: cpp
 compiler: gcc
 addons:
         apt:
+                sources:
+                - sourceline: 'ppa:ginggs/boost161'
                 packages:
                 - libboost-system-dev
                 - libboost-filesystem-dev
