@@ -2,17 +2,20 @@ sudo: required
 dist: trusty
 language: cpp
 compiler: gcc
+notifications:
+        email: false
 addons:
         apt:
-                sources:
-                - sourceline: 'ppa:ginggs/boost161'
                 packages:
-                - libboost-system1.61-dev
-                - libboost-filesystem1.61-dev
-                - libboost-program-options1.61-dev
-                - libboost-test1.61-dev
                 - libmusicbrainz5-dev
                 - libtag1-dev
+before_install:
+- wget -O boost_1_59_0.tar.bz2 https://sourceforge.net/projects/boost/files/boost/1.59.0/boost_1_59_0.tar.bz2/download
+- mkdir boost_1_59_0 && cd boost_1_59_0
+- tar --bzip2 -xf ../boost_1_59_0.tar.bz2
+- ./bootstrap.sh --prefix=/usr/local --with-libraries=filesystem,system,program_options,test
+- ./b2 -j2
+- sudo ./b2 install
 script:
 - mkdir build && cd build
 - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON .. && make -j2 && make test
