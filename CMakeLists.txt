@@ -38,18 +38,18 @@ if(BUILD_TESTS)
 	find_package(FakeIt REQUIRED)
 endif()
 
-find_package(Boost 1.59.0 REQUIRED COMPONENTS ${BOOST_REQUIRED_LIBS})
+find_package(Boost 1.60.0 REQUIRED COMPONENTS ${BOOST_REQUIRED_LIBS})
 find_package(MusicBrainz5 REQUIRED)
 find_package(TagLib REQUIRED)
 
 set(PROJECT_BUILD_LIBRARY murefreshy)
 set(BUILD_LIBRARIES
+	${PROJECT_BUILD_LIBRARY}
 	boost_system
 	boost_filesystem
 	boost_program_options
 	tag
 	musicbrainz5
-	${PROJECT_BUILD_LIBRARY}
 )
 
 # Build
