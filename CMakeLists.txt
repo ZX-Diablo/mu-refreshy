@@ -58,11 +58,6 @@ file(GLOB_RECURSE sources "src/*/*.cpp")
 
 include_directories(
 	${CMAKE_SOURCE_DIR}/include
-	/usr/local/include
-)
-
-link_directories(
-	/usr/local/lib
 )
 
 add_library(${PROJECT_BUILD_LIBRARY} STATIC ${sources})
