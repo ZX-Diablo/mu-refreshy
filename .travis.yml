@@ -22,6 +22,3 @@ script:
 - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON .. && make -j2 && make test
 after_failure:
 - for file in bin/tests/*; do echo $file; $file; echo "======="; done
-- ls /usr/local/lib/libboost*
-- ldd bin/mu-refreshy
-- ldd bin/tests/data_artist
