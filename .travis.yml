@@ -19,3 +19,5 @@ before_install:
 script:
 - mkdir build && cd build
 - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON .. && make -j2 && make test
+after_failure:
+- for file in bin/tests/*; do echo $file; $file; echo "======="; done
