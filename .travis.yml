@@ -11,6 +11,7 @@ addons:
                 - libtag1-dev
 before_install:
 - pip install --user cpp-coveralls
+- pip install --user codecov
 - wget -O boost_1_60_0.tar.bz2 https://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.bz2/download
 - tar --bzip2 -xf boost_1_60_0.tar.bz2 && cd boost_1_60_0
 - ./bootstrap.sh --prefix=/usr/local --with-libraries=filesystem,system,program_options,test
@@ -23,5 +24,6 @@ script:
 - cmake -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON .. && make -j2 && make test
 after_success:
 - coveralls -r .. -i include -i src --gcov-options '\-lp' >/dev/null
+- codecov -X gcov --root ..
 after_failure:
 - for file in bin/tests/*; do echo $file; $file; echo "======="; done
