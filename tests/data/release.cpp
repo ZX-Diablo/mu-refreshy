@@ -4,6 +4,7 @@
 
 #include <data/release.h>
 #include <list>
+#include <sstream>
 
 const std::string RELEASE_ID = "A123";
 const std::string RELEASE_TITLE = "Music album";
@@ -83,5 +84,46 @@ BOOST_AUTO_TEST_SUITE(ordering);
 		release r1(std::string(), std::string(), std::string(), RELEASE_DATE);
 		release r2(std::string(), std::string(), std::string(), sample);
 		BOOST_TEST(!(r2 < r1));
+	}
+BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE(printing);
+	BOOST_AUTO_TEST_CASE(stream)
+	{
+		release r(RELEASE_ID, RELEASE_TITLE, RELEASE_TYPE, date(RELEASE_DATE));
+		std::stringstream ss;
+		ss << r;
+		BOOST_TEST(ss.str().find(RELEASE_DATE) != std::string::npos);
+		BOOST_TEST(ss.str().find(RELEASE_TITLE) != std::string::npos);
+	}
+BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE(comparator);
+	BOOST_AUTO_TEST_CASE(nullptr_both)
+	{
+		release_comparator rc;
+		BOOST_TEST(!rc(nullptr, nullptr));
+	}
+
+	BOOST_AUTO_TEST_CASE(nullptr_left)
+	{
+		release_ptr_t r2 = std::make_shared<release>(std::string(), std::string(), std::string(), RELEASE_DATE_PREV_DAY);
+		release_comparator rc;
+		BOOST_TEST(!rc(nullptr, r2));
+	}
+
+	BOOST_AUTO_TEST_CASE(nullptr_right)
+	{
+		release_ptr_t r1 = std::make_shared<release>(std::string(), std::string(), std::string(), RELEASE_DATE);
+		release_comparator rc;
+		BOOST_TEST(!rc(r1, nullptr));
+	}
+
+	BOOST_AUTO_TEST_CASE(not_null)
+	{
+		release_ptr_t r1 = std::make_shared<release>(std::string(), std::string(), std::string(), RELEASE_DATE);
+		release_ptr_t r2 = std::make_shared<release>(std::string(), std::string(), std::string(), RELEASE_DATE_PREV_DAY);
+		release_comparator rc;
+		BOOST_TEST(rc(r2, r1));
 	}
 BOOST_AUTO_TEST_SUITE_END();
