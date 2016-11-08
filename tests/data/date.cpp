@@ -4,6 +4,7 @@
 
 #include <data/date.h>
 #include <list>
+#include <sstream>
 
 const std::string DATE_YEAR = "2000";
 const std::string DATE_YEAR_EXPECTED = "2000-01-01";
@@ -102,5 +103,15 @@ BOOST_AUTO_TEST_SUITE(ordering);
 	BOOST_DATA_TEST_CASE(next_dates, boost::unit_test::data::make(NEXT_DATES))
 	{
 		BOOST_TEST(date(FULL_DATE) < sample);
+	}
+BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE(printing);
+	BOOST_AUTO_TEST_CASE(stream)
+	{
+		date d(FULL_DATE);
+		std::stringstream ss;
+		ss << d;
+		BOOST_TEST(ss.str() == FULL_DATE);
 	}
 BOOST_AUTO_TEST_SUITE_END();
