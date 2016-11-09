@@ -8,12 +8,14 @@
 #include <musicbrainz5/ReleaseGroup.h>
 #include <musicbrainz5/ReleaseGroupList.h>
 
+#include "data/releasefactory.h"
+
 musicbrainz::musicbrainz (const std::string& user_agent)
 	: query(user_agent)
 {
 }
 
-artist_list_t musicbrainz::search (const std::string& artist, const std::string& release) const
+artist_list_t musicbrainz::search_artists (const std::string& artist, const std::string& release) const
 {
 	artist_list_t result;
 	MusicBrainz5::CMetadata data = this->query.Query("release-group", "", "",
@@ -25,7 +27,7 @@ artist_list_t musicbrainz::search (const std::string& artist, const std::string&
 		return result;
 	}
 
-	for (int i = 0; i < releases->NumItems(); i++)
+	for (unsigned int i = 0; i < static_cast<unsigned int>(releases->NumItems()); i++)
 	{
 		MusicBrainz5::CReleaseGroup* rg = releases->Item(i);
 		MusicBrainz5::CArtistCredit* ac = rg->ArtistCredit();
@@ -55,10 +57,27 @@ artist_list_t musicbrainz::search (const std::string& artist, const std::string&
 	return result;
 }
 
-void musicbrainz::fill_releases (const artist_ptr_t& artist) const
+release_set_t musicbrainz::search_releases (const std::string& artist_id) const
 {
-	if (artist)
+	release_set_t result;
+
+	if (!artist_id.empty())
 	{
-		// TODO
+		MusicBrainz5::CMetadata data = this->query.Query("release-group", "", "", { {"artist", artist_id} });
+		MusicBrainz5::CReleaseGroupList* releases = data.ReleaseGroupList();
+
+		if (releases == nullptr)
+		{
+			return result;
+		}
+
+		for (unsigned int i = 0; i < static_cast<unsigned int>(releases->NumItems()); i++)
+		{
+			MusicBrainz5::CReleaseGroup* rg = releases->Item(i);
+
+			result.insert(releasefactory::get(rg));
+		}
 	}
+
+	return result;
 }
