@@ -5,7 +5,15 @@ project(mu-refreshy)
 # Options
 
 option(BUILD_TESTS "Build tests" OFF)
+option(BOOST_TEST_INTEGRATION_ENABLED "Enable integration tests" ON)
 message(STATUS "BUILD_TESTS: ${BUILD_TESTS}")
+message(STATUS "BOOST_TEST_INTEGRATION_ENABLED: ${BOOST_TEST_INTEGRATION_ENABLED}")
+
+if (BOOST_TEST_INTEGRATION_ENABLED)
+	set(BOOST_TEST_INTEGRATION_ENABLED true)
+else()
+	set(BOOST_TEST_INTEGRATION_ENABLED false)
+endif()
 
 # Project version
 
@@ -85,7 +93,10 @@ if(BUILD_TESTS)
 		endif()
 
 		add_executable(${test_name} ${test_file})
-		target_compile_definitions(${test_name} PRIVATE "BOOST_TEST_DYN_LINK=1")
+		target_compile_definitions(${test_name}
+			PRIVATE "BOOST_TEST_DYN_LINK=1"
+			PRIVATE "BOOST_TEST_INTEGRATION_ENABLED=${BOOST_TEST_INTEGRATION_ENABLED}"
+		)
 		target_link_libraries(${test_name} ${BUILD_LIBRARIES} boost_unit_test_framework)
 		set_target_properties(${test_name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests)
 		add_test(NAME ${test_name} COMMAND ${test_name})
