@@ -7,8 +7,8 @@
 const std::string USER_AGENT = "mu-refreshy/test (https://github.com/ZX-Diablo/mu-refreshy)";
 
 BOOST_AUTO_TEST_SUITE(search,
-	* boost::unit_test::enable_if<BOOST_TEST_INTEGRAL_ENABLED>()
-	* boost::unit_test::label(BOOST_TEST_INTEGRAL_LABEL)
+	* boost::unit_test::enable_if<BOOST_TEST_INTEGRATION_ENABLED>()
+	* boost::unit_test::label(BOOST_TEST_INTEGRATION_LABEL)
 );
 	BOOST_AUTO_TEST_SUITE(search_artists);
 		BOOST_AUTO_TEST_CASE(empty)
