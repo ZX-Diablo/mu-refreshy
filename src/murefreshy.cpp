@@ -1,15 +1,15 @@
-#include <iostream>
 #include <atomic>
+#include <iostream>
 
 #include <boost/program_options.hpp>
-
 #include <taglib/fileref.h>
 
-#include <filescan/filescanfactory.h>
-#include <thread/pool.h>
 #include <data/artistfactory.h>
+#include <filescan/filescanfactory.h>
 #include <storage/musicdb.h>
+#include <storage/remote/musicbrainz.h>
 #include <storage/storage.h>
+#include <thread/pool.h>
 
 int main (int argc, char** argv)
 {
@@ -62,7 +62,7 @@ int main (int argc, char** argv)
 	
 	std::cout << "Total " << files.size() << " files" << std::endl;
 
-	musicdb mb("mu-refreshy/0.1.2 (https://github.com/ZX-Diablo/mu-refreshy)");
+	musicdb mb(std::make_shared<musicbrainz>("mu-refreshy/0.1.2 (https://github.com/ZX-Diablo/mu-refreshy)"));
 	storage db;
 	pool tp(options["thread"].as<unsigned int>());
 	std::atomic_int counter(0);

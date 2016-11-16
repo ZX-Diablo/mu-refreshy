@@ -9,8 +9,8 @@
 #include <musicbrainz5/ReleaseGroup.h>
 #include <musicbrainz5/ReleaseGroupList.h>
 
-musicdb::musicdb (const std::string& user_agent)
-	: query(user_agent)
+musicdb::musicdb (const iremote_t& remote)
+	: remote(remote)
 {
 }
 
@@ -20,55 +20,30 @@ musicdb::~musicdb ()
 
 void musicdb::fill (const artist_ptr_t& artist)
 {
-	if (artist && artist->has_local_releases())
+	if (this->remote && artist && artist->has_local_releases())
 	{
-		MusicBrainz5::CMetadata data = this->query.Query("release-group", "", "",
-			{ {"query", "artist:\"" + artist->get_name() + "\" AND releasegroup:\""
-				+ (*artist->get_local_releases().begin())->get_title() + "\""} });
-		MusicBrainz5::CReleaseGroupList* releases = data.ReleaseGroupList();
-		
-		if (releases == nullptr || releases->NumItems() == 0)
+		std::string artist_name = artist->get_name();
+		std::string release_title = (*artist->get_local_releases().begin())->get_title();
+		artist_list_t artists = this->remote->search_artists(artist_name, release_title);
+
+		if (artists.empty())
 		{
 			return;
 		}
-		
-		MusicBrainz5::CReleaseGroup* rg = releases->Item(0);
-		MusicBrainz5::CArtistCredit* artist_credit = rg->ArtistCredit();
-		
-		if (artist_credit == nullptr || artist_credit->NameCreditList() == nullptr || artist_credit->NameCreditList()->NumItems() == 0)
+
+		artist->set_id(artists.front()->get_id()); // use the first artist, no ambiguity mechanism at the moment
+
+		release_set_t releases = this->remote->search_releases(artist->get_id());
+
+		if (releases.empty())
 		{
 			return;
 		}
-		
-		MusicBrainz5::CNameCredit* name_credit = artist_credit->NameCreditList()->Item(0);
-		
-		if (name_credit == nullptr)
-		{
-			return;
-		}
-		
-		MusicBrainz5::CArtist* a = name_credit->Artist();
-		
-		if (a == nullptr)
-		{
-			return;
-		}
-		
-		artist->set_id(a->ID());	
-		
-		MusicBrainz5::CMetadata releases_data = this->query.Query("release-group", "", "", { {"artist", a->ID()} });
-		releases = releases_data.ReleaseGroupList();
-		
-		if (releases == nullptr)
-		{
-			return;
-		}
-		
+
 		artist->clear_releases();
-		for (unsigned int i = 0; i < static_cast<unsigned int>(releases->NumItems()); i++)
+		for (const auto& it : releases)
 		{
-			rg = releases->Item(i);
-			artist->add_release(releasefactory::get(rg));
+			artist->add_release(it);
 		}
 	}
 }
