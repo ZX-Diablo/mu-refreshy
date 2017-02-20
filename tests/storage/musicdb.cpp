@@ -8,6 +8,9 @@ const std::string ARTIST_ID = "D34H";
 const std::string ARTIST_NAME = "artist";
 const std::string REMOTE_ARTIST_ID = "E4T8";
 
+const artist::id_set_t ARTIST_ID_SET = { ARTIST_ID };
+const artist::id_set_t ARTIST_MULTI_ID_SET = { ARTIST_ID, REMOTE_ARTIST_ID };
+
 const std::string RELEASE_ID = "A123";
 const std::string RELEASE_TITLE = "Music album";
 const std::string RELEASE_TYPE = "full album";
@@ -19,8 +22,8 @@ const std::string REMOTE_RELEASE_TYPE = "full album";
 const std::string REMOTE_RELEASE_DATE = "2006-07-02";
 
 const release_ptr_t RELEASE = std::make_shared<release>(RELEASE_ID, RELEASE_TITLE, RELEASE_TYPE, date(RELEASE_DATE));
-const release_ptr_t REMOTE_RELEASE = std::make_shared<release>(REMOTE_RELEASE_ID, REMOTE_RELEASE_TITLE,
-		REMOTE_RELEASE_TYPE, date(REMOTE_RELEASE_DATE));
+const release_ptr_t REMOTE_RELEASE = std::make_shared<release>(
+		REMOTE_RELEASE_ID, REMOTE_RELEASE_TITLE, REMOTE_RELEASE_TYPE, date(REMOTE_RELEASE_DATE));
 const artist_ptr_t ARTIST = std::make_shared<artist>(ARTIST_ID, ARTIST_NAME);
 const artist_ptr_t REMOTE_ARTIST = std::make_shared<artist>(REMOTE_ARTIST_ID, ARTIST_NAME);
 
@@ -36,6 +39,7 @@ BOOST_AUTO_TEST_SUITE(fill);
 		musicdb db(nullptr);
 		BOOST_REQUIRE_NO_THROW(db.fill(ARTIST));
 		BOOST_TEST(ARTIST->get_id() == ARTIST_ID);
+		BOOST_TEST(ARTIST->get_ids() == ARTIST_ID_SET);
 		BOOST_TEST(!ARTIST->has_releases());
 	}
 
@@ -62,6 +66,7 @@ BOOST_AUTO_TEST_SUITE(fill);
 		musicdb db(iremote_t(&remote_mock.get(), [](iremote*) {}));
 		BOOST_REQUIRE_NO_THROW(db.fill(ARTIST));
 		BOOST_TEST(ARTIST->get_id() == ARTIST_ID);
+		BOOST_TEST(ARTIST->get_ids() == ARTIST_ID_SET);
 		BOOST_TEST(!ARTIST->has_releases());
 
 		fakeit::VerifyNoOtherInvocations(remote_mock);
@@ -78,6 +83,7 @@ BOOST_AUTO_TEST_SUITE(fill);
 		ARTIST->add_local_release(RELEASE);
 		BOOST_REQUIRE_NO_THROW(db.fill(ARTIST));
 		BOOST_TEST(ARTIST->get_id() == ARTIST_ID);
+		BOOST_TEST(ARTIST->get_ids() == ARTIST_ID_SET);
 		BOOST_TEST(!ARTIST->has_releases());
 
 		fakeit::Verify(Method(remote_mock, search_artists)).Once();
@@ -94,7 +100,8 @@ BOOST_AUTO_TEST_SUITE(fill);
 		musicdb db(iremote_t(&remote_mock.get(), [](iremote*) {}));
 		ARTIST->add_local_release(RELEASE);
 		BOOST_REQUIRE_NO_THROW(db.fill(ARTIST));
-		BOOST_TEST(ARTIST->get_id() == REMOTE_ARTIST_ID);
+		BOOST_TEST(ARTIST->get_id() == ARTIST_ID);
+		BOOST_TEST(ARTIST->get_ids() == ARTIST_MULTI_ID_SET);
 		BOOST_TEST(!ARTIST->has_releases());
 
 		fakeit::Verify(Method(remote_mock, search_artists)).Once();
@@ -113,8 +120,9 @@ BOOST_AUTO_TEST_SUITE(fill);
 		ARTIST->add_release(RELEASE);
 		ARTIST->add_local_release(RELEASE);
 		BOOST_REQUIRE_NO_THROW(db.fill(ARTIST));
-		BOOST_TEST(ARTIST->get_id() == REMOTE_ARTIST_ID);
-		BOOST_TEST(ARTIST->get_releases().size() == 1);
+		BOOST_TEST(ARTIST->get_id() == ARTIST_ID);
+		BOOST_TEST(ARTIST->get_ids() == ARTIST_MULTI_ID_SET);
+		BOOST_REQUIRE(ARTIST->get_releases().size() == 1);
 
 		release_ptr_t r = *ARTIST->get_releases().begin();
 		BOOST_TEST(r->get_id() == REMOTE_RELEASE_ID);

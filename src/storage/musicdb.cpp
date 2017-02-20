@@ -31,7 +31,10 @@ void musicdb::fill (const artist_ptr_t& artist)
 			return;
 		}
 
-		artist->set_id(artists.front()->get_id()); // use the first artist, no ambiguity mechanism at the moment
+		for (const auto& it : artists)
+		{
+			artist->add_id(it->get_id(), false); // the first ID would be default, still no ambiguity mechanism
+		}
 
 		release_set_t releases = this->remote->search_releases(artist->get_id());
 

@@ -8,7 +8,7 @@ artist_ptr_t artistfactory::get (const TagLib::Tag* tag)
 	if (tag)
 	{
 		release_ptr_t r = releasefactory::get(tag);
-		artist_ptr_t a = std::make_shared<artist>(std::string(), tag->artist().toCString());
+		artist_ptr_t a = std::make_shared<artist>(tag->artist().toCString());
 
 		a->add_local_release(r);
 

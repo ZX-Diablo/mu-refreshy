@@ -9,6 +9,7 @@ const std::string ARTIST_NAME = "artist";
 const std::string RELEASE_TITLE = "Music album";
 const unsigned int RELEASE_YEAR = 2000;
 const std::string RELEASE_YEAR_EXPECTED = "2000-01-01";
+const unsigned int RELEASE_SET_SIZE_EXPECTED = 1;
 
 BOOST_AUTO_TEST_SUITE(get);
 	BOOST_AUTO_TEST_CASE(tag_empty)
@@ -27,8 +28,9 @@ BOOST_AUTO_TEST_SUITE(get);
 		artist_ptr_t a = artistfactory::get(&tag_mock.get());
 		BOOST_TEST(a->get_id() == std::string());
 		BOOST_TEST(a->get_name() == ARTIST_NAME);
-		BOOST_TEST(a->get_releases().size() == 0);
-		BOOST_TEST(a->get_local_releases().size() == 1);
+		BOOST_TEST(a->get_ids().empty());
+		BOOST_TEST(a->get_releases().empty());
+		BOOST_REQUIRE(a->get_local_releases().size() == RELEASE_SET_SIZE_EXPECTED);
 
 		release_ptr_t r = *a->get_local_releases().begin();
 		BOOST_TEST(r->get_id() == std::string());
