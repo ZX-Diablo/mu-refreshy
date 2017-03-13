@@ -2,12 +2,6 @@
 
 #include <iostream>
 
-storage::storage ()
-	: s()
-	, m()
-{
-}
-
 storage::storage (const artist_ptr_t& artist)
 	: s()
 	, m()
@@ -16,10 +10,6 @@ storage::storage (const artist_ptr_t& artist)
 	{
 		this->s.insert(artist);
 	}
-}
-
-storage::~storage ()
-{
 }
 
 bool storage::add (const artist_ptr_t& artist)
@@ -76,38 +66,14 @@ artist_ptr_t storage::get_by_id (const std::string& id) const
 	return (it != index.end() ? (*it) : nullptr);
 }
 
-void storage::print_all (std::ostream& stream) const
+storage::const_iterator storage::begin () const
 {
 	auto& index = this->s.get<name_tag_t>();
-	for (auto it = index.begin(); it != index.end(); ++it)
-	{
-		auto r = (*it)->get_releases();
-		auto lr = (*it)->get_local_releases();
+	return index.begin();
+}
 
-		if (!r.empty() && !lr.empty())
-		{
-			auto jt = r.upper_bound(*lr.rbegin());
-
-			stream << "local: " << std::endl;
-			for (auto kt = lr.begin(); kt != lr.end(); ++kt)
-			{
-				stream << "\t" << **kt << std::endl;
-			}
-
-			stream << "all: " << std::endl;
-			for (auto kt = r.begin(); kt != r.end(); ++kt)
-			{
-				stream << "\t" << **kt << std::endl;
-			}
-
-			if (jt != r.end())
-			{
-				stream << (*it)->get_name() << std::endl;
-				for (; jt != r.end(); ++jt)
-				{
-					stream << "\t" << **jt << std::endl;
-				}
-			}
-		}
-	}
+storage::const_iterator storage::end () const
+{
+	auto& index = this->s.get<name_tag_t>();
+	return index.end();
 }

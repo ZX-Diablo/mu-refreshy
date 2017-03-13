@@ -7,6 +7,7 @@
 #include <data/artistfactory.h>
 #include <filescan/filescanfactory.h>
 #include <storage/musicdb.h>
+#include <storage/printer/text.h>
 #include <storage/remote/musicbrainz.h>
 #include <storage/storage.h>
 #include <thread/pool.h>
@@ -94,9 +95,10 @@ int main (int argc, char** argv)
 
 	std::cout << "WAITING" << std::endl;
 	tp.wait();
-		
-	std::cout << std::endl << "PRINTING" << std::endl;
-	db.print_all(std::cout);
 	
+	std::cout << std::endl << "PRINTING" << std::endl;
+	text printer;
+	printer.print(db, std::cout);
+
 	return 0;
 }

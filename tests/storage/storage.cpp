@@ -16,21 +16,19 @@ const artist_ptr_t ARTIST_OTHER = std::make_shared<artist>(ARTIST_OTHER_ID, ARTI
 const artist_ptr_t ARTIST_SAME_ID = std::make_shared<artist>(ARTIST_ID, ARTIST_OTHER_NAME);
 const artist_ptr_t ARTIST_SAME_NAME = std::make_shared<artist>(ARTIST_OTHER_ID, ARTIST_NAME);
 
+BOOST_TEST_DONT_PRINT_LOG_VALUE(storage::const_iterator);
+
 BOOST_AUTO_TEST_SUITE(constructor);
 	BOOST_AUTO_TEST_CASE(empty)
 	{
 		storage s;
-		std::stringstream ss;
-		s.print_all(ss);
-		BOOST_TEST(ss.str().empty());
+		BOOST_TEST(s.begin() == s.end());
 	}
 
 	BOOST_AUTO_TEST_CASE(empty_nullptr)
 	{
 		storage s(nullptr);
-		std::stringstream ss;
-		s.print_all(ss);
-		BOOST_TEST(ss.str().empty());
+		BOOST_TEST(s.begin() == s.end());
 	}
 
 	BOOST_AUTO_TEST_CASE(with_artist)
@@ -124,5 +122,20 @@ BOOST_AUTO_TEST_SUITE(replace);
 		BOOST_TEST(!s.get_by_id(ARTIST_ID));
 		BOOST_TEST(s.get_by_id(ARTIST_OTHER_ID) == ARTIST_SAME_NAME);
 		BOOST_TEST(s.get_by_name(ARTIST_NAME) == ARTIST_SAME_NAME);
+	}
+BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE(iterators);
+	BOOST_AUTO_TEST_CASE(begin_end_equal_empty)
+	{
+		storage s;
+		BOOST_TEST(s.begin() == s.end());
+	}
+
+	BOOST_AUTO_TEST_CASE(begin_end_not_equal)
+	{
+		storage s(ARTIST);
+		BOOST_TEST(s.begin() != s.end());
+		BOOST_TEST(++s.begin() == s.end());
 	}
 BOOST_AUTO_TEST_SUITE_END();
