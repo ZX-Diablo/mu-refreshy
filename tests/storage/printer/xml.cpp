@@ -86,4 +86,48 @@ BOOST_AUTO_TEST_SUITE(print);
 		BOOST_TEST(res.find(RELEASE_SECOND_TYPE) != std::string::npos);
 		BOOST_TEST(res.find(RELEASE_SECOND_DATE) != std::string::npos);
 	}
+
+	BOOST_AUTO_TEST_CASE(local_remote)
+	{
+		xml p;
+		std::stringstream ss;
+		std::string::size_type pos = std::string::npos;
+
+		p.print(STORAGE_LOCAL_REMOTE, ss);
+
+		std::string res = ss.str();
+
+		BOOST_REQUIRE((pos = res.find("local")) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_FIRST_ID, pos) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_FIRST_TITLE, pos) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_FIRST_TYPE, pos) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_FIRST_DATE, pos) != std::string::npos);
+
+		BOOST_REQUIRE((pos = res.find("remote")) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_SECOND_ID, pos) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_SECOND_TITLE, pos) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_SECOND_TYPE, pos) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_SECOND_DATE, pos) != std::string::npos);
+	}
+
+	BOOST_AUTO_TEST_CASE(full_local_remote)
+	{
+		xml p;
+		std::stringstream ss;
+
+		p.print(STORAGE_FULL_LOCAL_REMOTE, ss);
+
+		std::string res = ss.str();
+
+		BOOST_TEST(res.find("remote") == std::string::npos);
+		BOOST_TEST(res.find("local") != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_FIRST_ID) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_FIRST_TITLE) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_FIRST_TYPE) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_FIRST_DATE) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_SECOND_ID) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_SECOND_TITLE) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_SECOND_TYPE) != std::string::npos);
+		BOOST_TEST(res.find(RELEASE_SECOND_DATE) != std::string::npos);
+	}
 BOOST_AUTO_TEST_SUITE_END();
