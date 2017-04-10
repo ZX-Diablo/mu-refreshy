@@ -49,6 +49,7 @@ endif()
 find_package(Boost 1.60.0 REQUIRED COMPONENTS ${BOOST_REQUIRED_LIBS})
 find_package(MusicBrainz5 REQUIRED)
 find_package(TagLib REQUIRED)
+find_package(PugiXML REQUIRED)
 
 set(PROJECT_BUILD_LIBRARY murefreshy)
 set(BUILD_LIBRARIES
@@ -58,6 +59,7 @@ set(BUILD_LIBRARIES
 	boost_program_options
 	tag
 	musicbrainz5
+	pugixml
 )
 
 # Build
