@@ -25,13 +25,18 @@ const release_set_t RELEASE_SET_LOCAL = { RELEASE_FIRST };
 const release_set_t RELEASE_SET_REMOTE = { RELEASE_FIRST, RELEASE_SECOND };
 const release_set_t RELEASE_SET_FULL_LOCAL = RELEASE_SET_REMOTE;
 
+const std::string ARTIST_ID = "D34H";
+const std::string ARTIST_NAME = "Various";
+
 const artist_ptr_t ARTIST_EMPTY = std::make_shared<artist>(std::string());
+const artist_ptr_t ARTIST_NAMED = std::make_shared<artist>(ARTIST_ID, ARTIST_NAME);
 const artist_ptr_t ARTIST_ONLY_LOCAL = std::make_shared<artist>(release_set_t(), RELEASE_SET_LOCAL);
 const artist_ptr_t ARTIST_ONLY_REMOTE = std::make_shared<artist>(RELEASE_SET_REMOTE, release_set_t());
 const artist_ptr_t ARTIST_LOCAL_REMOTE = std::make_shared<artist>(RELEASE_SET_REMOTE, RELEASE_SET_LOCAL);
 const artist_ptr_t ARTIST_FULL_LOCAL_REMOTE = std::make_shared<artist>(RELEASE_SET_REMOTE, RELEASE_SET_FULL_LOCAL);
 
 const storage STORAGE_EMPTY;
+const storage STORAGE_NAMED(ARTIST_NAMED);
 const storage STORAGE_ONLY_LOCAL(ARTIST_ONLY_LOCAL);
 const storage STORAGE_ONLY_REMOTE(ARTIST_ONLY_REMOTE);
 const storage STORAGE_LOCAL_REMOTE(ARTIST_LOCAL_REMOTE);
@@ -48,6 +53,22 @@ BOOST_AUTO_TEST_SUITE(print);
 		BOOST_TEST(ss.str().find("artist ") == std::string::npos);
 	}
 
+	BOOST_AUTO_TEST_CASE(named_artist)
+	{
+		xml p;
+		std::stringstream ss;
+
+		p.print(STORAGE_NAMED, ss);
+
+		std::string res = ss.str();
+
+		BOOST_TEST(res.find("local") == std::string::npos);
+		BOOST_TEST(res.find("remote") == std::string::npos);
+		BOOST_TEST(res.find("artist ") != std::string::npos);
+		BOOST_TEST(res.find(ARTIST_ID) != std::string::npos);
+		BOOST_TEST(res.find(ARTIST_NAME) != std::string::npos);
+	}
+
 	BOOST_AUTO_TEST_CASE(only_local)
 	{
 		xml p;
@@ -57,7 +78,6 @@ BOOST_AUTO_TEST_SUITE(print);
 
 		std::string res = ss.str();
 
-		// No artist attributes testing because no way to construct such artist
 		BOOST_TEST(res.find("remote") == std::string::npos);
 		BOOST_TEST(res.find("local") != std::string::npos);
 		BOOST_TEST(res.find(RELEASE_FIRST_ID) != std::string::npos);
