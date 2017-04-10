@@ -7,7 +7,7 @@
 #include <data/artistfactory.h>
 #include <filescan/filescanfactory.h>
 #include <storage/musicdb.h>
-#include <storage/printer/text.h>
+#include <storage/printer/printerfactory.h>
 #include <storage/remote/musicbrainz.h>
 #include <storage/storage.h>
 #include <thread/pool.h>
@@ -16,65 +16,66 @@ int main (int argc, char** argv)
 {
 	boost::program_options::positional_options_description pos_flag;
 	pos_flag.add("root", 1);
-	
+
 	boost::program_options::options_description flags("Allowed options");
-	
+
 	flags.add_options()
 		("help,h", "Show this help")
 		("root,r", boost::program_options::value<std::string>()->required(), "Root directory")
 		("scan,s", boost::program_options::value<std::string>()->default_value("all"), "Directory scan method (all|artist|album)")
+		("format,f", boost::program_options::value<std::string>()->default_value("txt"), "Output format (txt|xml)")
 		("thread,t", boost::program_options::value<unsigned int>()->default_value(8), "Amount of threads")
 	;
-	
+
 	boost::program_options::command_line_parser parser(argc, argv);
 	boost::program_options::variables_map options;
-	
+
 	parser.options(flags);
 	parser.positional(pos_flag);
-	
+
 	try
 	{
 		boost::program_options::store(parser.run(), options);
 	}
 	catch (boost::program_options::error& e)
 	{
-		std::cout << e.what() << std::endl;
+		std::cerr << e.what() << std::endl;
 		return -1;
 	}
-	
+
 	if (options.count("root") == 0)
 	{
 		std::cerr << "Must specify root directory" << std::endl << flags;
 		return -1;
 	}
-	
+
 	ifilescan::path_t root(options["root"].as<std::string>());
 	auto fs = filescanfactory::get(options["scan"].as<std::string>());
-	
+
 	if (fs == nullptr)
 	{
 		std::cerr << "Invalid scan option" << std::endl << flags;
 		return -1;
 	}
 
-	std::cout << "Start scanning " << root << "..." << std::endl;
-	
+	std::cerr << "Start scanning " << root << "..." << std::endl;
+
 	auto files = fs->scan(root);
-	
-	std::cout << "Total " << files.size() << " files" << std::endl;
+
+	std::cerr << "Total " << files.size() << " files" << std::endl;
 
 	musicdb mb(std::make_shared<musicbrainz>("mu-refreshy/0.3.0 (https://github.com/ZX-Diablo/mu-refreshy)"));
 	storage db;
 	pool tp(options["thread"].as<unsigned int>());
 	std::atomic_int counter(0);
-	
+
 	for (auto& it : files)
 	{
 		tp.add_task([&mb, &db, &counter, it]()
 		{
 			TagLib::FileRef file(it.c_str());
 			TagLib::Tag* tag = file.tag();
-			
+
 			artist_ptr_t a = artistfactory::get(tag);
 			if (db.add(a))
 			{
@@ -87,18 +88,30 @@ int main (int argc, char** argv)
 				main->add_local_release(*a->get_local_releases().begin());
 				db.replace(main);
 			}
-			
+
 			counter++;
-			std::cout << "\rDone: " << counter;
+			std::cerr << "\rDone: " << counter;
 		});
 	}
 
-	std::cout << "WAITING" << std::endl;
+	std::cerr << "WAITING" << std::endl;
 	tp.wait();
-	
-	std::cout << std::endl << "PRINTING" << std::endl;
-	text printer;
-	printer.print(db, std::cout);
+
+	std::cerr << std::endl << "PRINTING" << std::endl;
+
+	auto printer = printerfactory::get(options["format"].as<std::string>());
+
+	if (printer == nullptr)
+	{
+		std::cerr << "Invalid format option" << std::endl << flags;
+
+		printer = printerfactory::get("txt");
+		printer->print(db, std::cout);
+
+		return -1;
+	}
+
+	printer->print(db, std::cout);
 
 	return 0;
 }
