@@ -18,7 +18,7 @@ endif()
 # Project version
 
 set(mu-refreshy_VERSION_MAJOR 0)
-set(mu-refreshy_VERSION_MINOR 3)
+set(mu-refreshy_VERSION_MINOR 4)
 set(mu-refreshy_VERSION_PATCH 0)
 set(mu-refreshy_VERSION ${mu-refreshy_VERSION_MAJOR}.${mu-refreshy_VERSION_MINOR}.${mu-refreshy_VERSION_PATCH})
 
