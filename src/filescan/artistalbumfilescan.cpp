@@ -18,7 +18,7 @@ ifilescan::path_list_t artistalbumfilescan::scan (const path_t& root)
 						{
 							return boost::filesystem::is_regular_file(f) && f.extension() == ".mp3";
 						});
-						
+
 						if (it != dit_t())
 						{
 							result.push_back(*it);
@@ -28,6 +28,6 @@ ifilescan::path_list_t artistalbumfilescan::scan (const path_t& root)
 			}
 		});
 	}
-	
+
 	return result;
 }

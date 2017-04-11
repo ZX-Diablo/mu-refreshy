@@ -10,6 +10,7 @@ date::date (const std::string& d)
 	if (pos != std::string::npos)
 	{
 		pos = this->d.find("-", pos + 1);
+
 		if (pos == std::string::npos)
 		{
 			this->d += "-01";
@@ -47,7 +48,7 @@ date& date::operator= (date&& other)
 	{
 		this->d = std::move(other.d);
 	}
-	
+
 	return *this;
 }
 

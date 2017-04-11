@@ -21,6 +21,6 @@ artist_ptr_t artistfactory::get (const TagLib::Tag* tag)
 artist_ptr_t artistfactory::get (const MusicBrainz5::CArtist* a)
 {
 	return a != nullptr
-		? std::make_shared<artist>(a->ID(), a->Name())
-		: nullptr;
+	       ? std::make_shared<artist>(a->ID(), a->Name())
+	       : nullptr;
 }

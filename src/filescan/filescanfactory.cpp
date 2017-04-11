@@ -17,6 +17,6 @@ filescanfactory::ifilescan_t filescanfactory::get (const std::string& type)
 	{
 		return std::make_shared<artistalbumfilescan>();
 	}
-	
+
 	return nullptr;
 }

@@ -34,7 +34,7 @@ bool operator< (const release& lhs, const release& rhs)
 	{
 		return false;
 	}
-	
+
 	return lhs.get_date() < rhs.get_date();
 }
 
@@ -49,6 +49,6 @@ bool release_comparator::operator() (const release_ptr_t& lhs, const release_ptr
 	{
 		return false;
 	}
-	
+
 	return *lhs < *rhs;
 }

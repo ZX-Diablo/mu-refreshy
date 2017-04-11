@@ -44,6 +44,7 @@ void musicdb::fill (const artist_ptr_t& artist)
 		}
 
 		artist->clear_releases();
+
 		for (const auto& it : releases)
 		{
 			artist->add_release(it);

@@ -14,12 +14,14 @@ void text::print (const storage& s, std::ostream& out) const
 			out << (*it)->get_name() << std::endl;
 
 			out << "local: " << std::endl;
+
 			for (auto kt = lr.begin(); kt != lr.end(); ++kt)
 			{
 				out << "\t" << **kt << std::endl;
 			}
 
 			out << "all: " << std::endl;
+
 			for (auto kt = r.begin(); kt != r.end(); ++kt)
 			{
 				out << "\t" << **kt << std::endl;
@@ -28,6 +30,7 @@ void text::print (const storage& s, std::ostream& out) const
 			if (jt != r.end())
 			{
 				out << "new: " << std::endl;
+
 				for (; jt != r.end(); ++jt)
 				{
 					out << "\t" << **jt << std::endl;

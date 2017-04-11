@@ -8,7 +8,7 @@ ifilescan::path_list_t allfilescan::scan (const path_t& root)
 	{
 		this->scan(root, result);
 	}
-	
+
 	return result;
 }
 

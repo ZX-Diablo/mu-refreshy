@@ -20,6 +20,6 @@ ifilescan::path_list_t artistfilescan::scan (const path_t& root)
 			}
 		});
 	}
-	
+
 	return result;
 }
