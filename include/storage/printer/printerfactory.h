@@ -5,11 +5,14 @@
 #include <memory>
 #include <string>
 
-class printerfactory
+namespace printer
 {
-public:
-	typedef std::shared_ptr<iprinter> iprinter_t;
+	class printerfactory
+	{
+	public:
+		typedef std::shared_ptr<iprinter> iprinter_t;
 
-public:
-	static iprinter_t get (const std::string& type);
-};
+	public:
+		static iprinter_t get (const std::string& type);
+	};
+}

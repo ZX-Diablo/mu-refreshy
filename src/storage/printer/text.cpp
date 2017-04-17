@@ -1,5 +1,8 @@
 #include <storage/printer/text.h>
 
+namespace printer
+{
+
 void text::print (const storage& s, std::ostream& out) const
 {
 	for (auto it = s.begin(); it != s.end(); ++it)
@@ -38,4 +41,6 @@ void text::print (const storage& s, std::ostream& out) const
 			}
 		}
 	}
+}
+
 }

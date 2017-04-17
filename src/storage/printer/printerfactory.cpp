@@ -2,6 +2,9 @@
 #include <storage/printer/text.h>
 #include <storage/printer/xml.h>
 
+namespace printer
+{
+
 printerfactory::iprinter_t printerfactory::get (const std::string& type)
 {
 	if (type == "txt")
@@ -14,4 +17,6 @@ printerfactory::iprinter_t printerfactory::get (const std::string& type)
 	}
 
 	return nullptr;
+}
+
 }

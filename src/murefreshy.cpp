@@ -99,13 +99,13 @@ int main (int argc, char** argv)
 
 	std::cerr << std::endl << "PRINTING" << std::endl;
 
-	auto printer = printerfactory::get(options["format"].as<std::string>());
+	auto printer = printer::printerfactory::get(options["format"].as<std::string>());
 
 	if (printer == nullptr)
 	{
 		std::cerr << "Invalid format option" << std::endl << flags;
 
-		printer = printerfactory::get("txt");
+		printer = printer::printerfactory::get("txt");
 		printer->print(db, std::cout);
 
 		return -1;

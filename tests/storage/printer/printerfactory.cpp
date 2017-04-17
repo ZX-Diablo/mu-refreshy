@@ -9,6 +9,8 @@ const std::string PRINTER_UNKNOWN = "unknown";
 const std::string PRINTER_TEXT = "txt";
 const std::string PRINTER_XML = "xml";
 
+using namespace printer;
+
 BOOST_AUTO_TEST_SUITE(get);
 	BOOST_AUTO_TEST_CASE(get_empty)
 	{

@@ -1,5 +1,8 @@
 #include <storage/printer/xml.h>
 
+namespace printer
+{
+
 void xml::print (const storage& s, std::ostream& out) const
 {
 	pugi::xml_document doc;
@@ -55,4 +58,6 @@ void xml::print_release (pugi::xml_node& xml_release, const release_ptr_t& relea
 	xml_release.append_child("title").append_child(pugi::node_pcdata).set_value(release->get_title().c_str());
 	xml_release.append_child("type").append_child(pugi::node_pcdata).set_value(release->get_type().c_str());
 	xml_release.append_child("date").append_child(pugi::node_pcdata).set_value(release->get_date().get().c_str());
+}
+
 }

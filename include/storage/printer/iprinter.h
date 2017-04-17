@@ -4,9 +4,12 @@
 
 #include <ostream>
 
-class iprinter
+namespace printer
 {
-public:
-	virtual ~iprinter () = default;
-	virtual void print (const storage& s, std::ostream& out) const = 0;
-};
+	class iprinter
+	{
+	public:
+		virtual ~iprinter () = default;
+		virtual void print (const storage& s, std::ostream& out) const = 0;
+	};
+}
