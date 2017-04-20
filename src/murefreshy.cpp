@@ -1,4 +1,5 @@
 #include <atomic>
+#include <fstream>
 #include <iostream>
 
 #include <boost/program_options.hpp>
@@ -8,6 +9,7 @@
 #include <filescan/filescanfactory.h>
 #include <storage/musicdb.h>
 #include <storage/printer/printerfactory.h>
+#include <storage/reader/xml.h>
 #include <storage/remote/musicbrainz.h>
 #include <storage/storage.h>
 #include <thread/pool.h>
@@ -23,6 +25,7 @@ int main (int argc, char** argv)
 		("help,h", "Show this help")
 		("root,r", boost::program_options::value<std::string>()->required(), "Root directory")
 		("scan,s", boost::program_options::value<std::string>()->default_value("all"), "Directory scan method (all|artist|album)")
+		("file,i", boost::program_options::value<std::string>()->default_value(std::string()), "Input xml file")
 		("format,f", boost::program_options::value<std::string>()->default_value("txt"), "Output format (txt|xml)")
 		("thread,t", boost::program_options::value<unsigned int>()->default_value(8), "Amount of threads")
 	;
@@ -96,6 +99,16 @@ int main (int argc, char** argv)
 
 	std::cerr << "WAITING" << std::endl;
 	tp.wait();
+
+	std::string input_file = options["file"].as<std::string>();
+
+	if (!input_file.empty())
+	{
+		std::ifstream in(input_file);
+		reader::xml reader;
+
+		reader.read(db, in);
+	}
 
 	std::cerr << std::endl << "PRINTING" << std::endl;
 
