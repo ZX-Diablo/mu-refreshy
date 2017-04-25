@@ -5,7 +5,7 @@ release_ptr_t releasefactory::get (const TagLib::Tag* tag)
 	return tag != nullptr
 	       ? std::make_shared<release>(
 	               std::string()
-	               , tag->album().toCString()
+	               , tag->album().toCString(true)
 	               , std::string()
 	               , date(std::to_string(tag->year())))
 	       : nullptr;
