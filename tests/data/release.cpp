@@ -11,6 +11,7 @@ const std::string RELEASE_TITLE = "Music album";
 const std::string RELEASE_TYPE = "full album";
 const std::string RELEASE_DATE = "2000-06-13";
 const std::string RELEASE_ID_OTHER = "B987";
+const std::string RELEASE_TITLE_PREV = "Art album";
 
 const std::string RELEASE_DATE_PREV_YEAR = "1999-06-13";
 const std::string RELEASE_DATE_PREV_MONTH = "2000-05-13";
@@ -65,11 +66,18 @@ BOOST_AUTO_TEST_SUITE(ordering);
 		BOOST_TEST(!(r2 < r1));
 	}
 
-	BOOST_AUTO_TEST_CASE(equal_dates)
+	BOOST_AUTO_TEST_CASE(equal_dates_equal_titles)
 	{
 		release r1(std::string(), std::string(), std::string(), RELEASE_DATE);
 		release r2(std::string(), std::string(), std::string(), RELEASE_DATE);
 		BOOST_TEST(!(r2 < r1));
+	}
+
+	BOOST_AUTO_TEST_CASE(equal_dates_different_titles)
+	{
+		release r1(std::string(), RELEASE_TITLE, std::string(), RELEASE_DATE);
+		release r2(std::string(), RELEASE_TITLE_PREV, std::string(), RELEASE_DATE);
+		BOOST_TEST(r2 < r1);
 	}
 
 	BOOST_DATA_TEST_CASE(prev_dates, boost::unit_test::data::make(PREV_DATES))

@@ -35,6 +35,11 @@ bool operator< (const release& lhs, const release& rhs)
 		return false;
 	}
 
+	if (!(lhs.get_date() < rhs.get_date()) && !(rhs.get_date() < lhs.get_date()))
+	{
+		return lhs.get_title() < rhs.get_title();
+	}
+
 	return lhs.get_date() < rhs.get_date();
 }
 
