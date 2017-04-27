@@ -78,18 +78,27 @@ int main (int argc, char** argv)
 		{
 			TagLib::FileRef file(it.c_str());
 			TagLib::Tag* tag = file.tag();
-
 			artist_ptr_t a = artistfactory::get(tag);
-			if (db.add(a))
-			{
-				mb.fill(a);
-				db.replace(a);
-			}
-			else
+			bool need_update = false;
+
+			if (!db.add(a))
 			{
 				auto main = db.get_by_name(a->get_name());
+
 				main->add_local_release(*a->get_local_releases().begin());
-				db.replace(main);
+				a = main;
+				need_update = true;
+			}
+
+			if (!a->has_releases())
+			{
+				mb.fill(a);
+				need_update = a->has_releases();
+			}
+
+			if (need_update)
+			{
+				db.replace(a);
 			}
 
 			counter++;

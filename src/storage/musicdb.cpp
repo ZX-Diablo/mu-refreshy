@@ -23,8 +23,16 @@ void musicdb::fill (const artist_ptr_t& artist)
 	if (this->remote && artist && artist->has_local_releases())
 	{
 		std::string artist_name = artist->get_name();
-		std::string release_title = (*artist->get_local_releases().begin())->get_title();
-		artist_list_t artists = this->remote->search_artists(artist_name, release_title);
+		artist_list_t artists;
+
+		for (const auto& it : artist->get_local_releases())
+		{
+			artists = this->remote->search_artists(artist_name, it->get_title());
+			if (!artists.empty())
+			{
+				break;
+			}
+		}
 
 		if (artists.empty())
 		{
