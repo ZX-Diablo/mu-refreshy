@@ -41,7 +41,7 @@ void musicdb::fill (const artist_ptr_t& artist)
 
 		for (const auto& it : artists)
 		{
-			artist->add_id(it->get_id(), false); // the first ID would be default, still no ambiguity mechanism
+			artist->add_id(it->get_id(), false); // the first ID would be default if wasn't set previously (from xml)
 		}
 
 		release_set_t releases = this->remote->search_releases(artist->get_id());
