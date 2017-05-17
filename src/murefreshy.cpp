@@ -61,6 +61,17 @@ int main (int argc, char** argv)
 		return -1;
 	}
 
+	storage db;
+	std::string input_file = options["file"].as<std::string>();
+
+	if (!input_file.empty())
+	{
+		std::ifstream in(input_file);
+		reader::xml reader;
+
+		reader.read(db, in);
+	}
+
 	std::cerr << "Start scanning " << root << "..." << std::endl;
 
 	auto files = fs->scan(root);
@@ -68,7 +79,6 @@ int main (int argc, char** argv)
 	std::cerr << "Total " << files.size() << " files" << std::endl;
 
 	musicdb mb(std::make_shared<musicbrainz>("mu-refreshy/0.4.0 (https://github.com/ZX-Diablo/mu-refreshy)"));
-	storage db;
 	pool tp(options["thread"].as<unsigned int>());
 	std::atomic_int counter(0);
 
@@ -108,16 +118,6 @@ int main (int argc, char** argv)
 
 	std::cerr << "WAITING" << std::endl;
 	tp.wait();
-
-	std::string input_file = options["file"].as<std::string>();
-
-	if (!input_file.empty())
-	{
-		std::ifstream in(input_file);
-		reader::xml reader;
-
-		reader.read(db, in);
-	}
 
 	std::cerr << std::endl << "PRINTING" << std::endl;
 
