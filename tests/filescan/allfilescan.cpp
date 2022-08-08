@@ -4,6 +4,8 @@
 #include <filescan/allfilescan.h>
 #include <test/defines.h>
 
+#include <boost/filesystem/fstream.hpp>
+
 const ifilescan::path_t PATH_ROOT = "./test_root";
 const ifilescan::path_t PATH_ARTIST = PATH_ROOT / "artist";
 const ifilescan::path_t PATH_ALBUM = PATH_ARTIST / "album";
