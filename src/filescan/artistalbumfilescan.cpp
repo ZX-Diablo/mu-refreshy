@@ -1,5 +1,7 @@
 #include <filescan/artistalbumfilescan.h>
 
+#include <algorithm>
+
 ifilescan::path_list_t artistalbumfilescan::scan (const path_t& root)
 {
 	path_list_t result;

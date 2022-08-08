@@ -1,5 +1,7 @@
 #include <filescan/allfilescan.h>
 
+#include <algorithm>
+
 ifilescan::path_list_t allfilescan::scan (const path_t& root)
 {
 	path_list_t result;
