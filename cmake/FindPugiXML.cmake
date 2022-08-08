@@ -7,5 +7,5 @@ set(LIBPUGIXML_INCLUDE_DIRS ${LIBPUGIXML_INCLUDE_DIR})
 set(LIBPUGIXML_LIBRARIES ${LIBPUGIXML_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(libpugixml DEFAULT_MSG
+find_package_handle_standard_args(PugiXML DEFAULT_MSG
     LIBPUGIXML_LIBRARY LIBPUGIXML_INCLUDE_DIR)

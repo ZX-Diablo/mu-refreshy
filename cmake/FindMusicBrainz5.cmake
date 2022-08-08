@@ -7,5 +7,5 @@ set(LIBMUSICBRAINZ5_INCLUDE_DIRS ${LIBMUSICBRAINZ5_INCLUDE_DIR})
 set(LIBMUSICBRAINZ5_LIBRARIES ${LIBMUSICBRAINZ5_LIBRARY})
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(libmusicbrainz5 DEFAULT_MSG
+find_package_handle_standard_args(MusicBrainz5 DEFAULT_MSG
     LIBMUSICBRAINZ5_LIBRARY LIBMUSICBRAINZ5_INCLUDE_DIR)
