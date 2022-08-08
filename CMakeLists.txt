@@ -19,7 +19,7 @@ endif()
 
 set(mu-refreshy_VERSION_MAJOR 0)
 set(mu-refreshy_VERSION_MINOR 5)
-set(mu-refreshy_VERSION_PATCH 0)
+set(mu-refreshy_VERSION_PATCH 1)
 set(mu-refreshy_VERSION ${mu-refreshy_VERSION_MAJOR}.${mu-refreshy_VERSION_MINOR}.${mu-refreshy_VERSION_PATCH})
 
 # CMake flags

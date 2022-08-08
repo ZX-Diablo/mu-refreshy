@@ -78,7 +78,7 @@ int main (int argc, char** argv)
 
 	std::cerr << "Total " << files.size() << " files" << std::endl;
 
-	musicdb mb(std::make_shared<musicbrainz>("mu-refreshy/0.5.0 (https://github.com/ZX-Diablo/mu-refreshy)"));
+	musicdb mb(std::make_shared<musicbrainz>("mu-refreshy/0.5.1 (https://github.com/ZX-Diablo/mu-refreshy)"));
 	pool tp(options["thread"].as<unsigned int>());
 	std::atomic_int counter(0);
 
