@@ -16,3 +16,6 @@ jobs:
 
       - name: Install dependencies
         run: sudo apt-get install -y libmusicbrainz5-dev libtag1-dev libpugixml-dev
+
+      - name: Download Boost
+        run: wget -O boost_1_79_0.tar.bz2 https://sourceforge.net/projects/boost/files/boost/1.79.0/boost_1_79_0.tar.bz2/download
