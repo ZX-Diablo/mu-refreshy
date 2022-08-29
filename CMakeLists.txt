@@ -46,7 +46,7 @@ if(BUILD_TESTS)
 	find_package(FakeIt REQUIRED)
 endif()
 
-find_package(Boost 1.60.0 REQUIRED COMPONENTS ${BOOST_REQUIRED_LIBS})
+find_package(Boost 1.79.0 REQUIRED COMPONENTS ${BOOST_REQUIRED_LIBS})
 find_package(MusicBrainz5 REQUIRED)
 find_package(TagLib REQUIRED)
 find_package(PugiXML REQUIRED)
