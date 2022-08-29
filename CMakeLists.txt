@@ -53,13 +53,13 @@ find_package(PugiXML REQUIRED)
 
 set(PROJECT_BUILD_LIBRARY murefreshy)
 set(BUILD_LIBRARIES
+	${PROJECT_BUILD_LIBRARY}
 	boost_system
 	boost_filesystem
 	boost_program_options
 	tag
 	musicbrainz5
-	pugixml
-	${PROJECT_BUILD_LIBRARY}
+	pugixml	
 )
 
 # Build
