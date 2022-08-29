@@ -5,9 +5,6 @@ on:
   pull_request:
     branches: [ "master" ]
 
-  # Temp
-  workflow_dispatch:
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,3 +16,14 @@ jobs:
 
       - name: Download Boost
         run: wget -O boost_1_79_0.tar.bz2 https://sourceforge.net/projects/boost/files/boost/1.79.0/boost_1_79_0.tar.bz2/download
+
+      - name: Unpack Boost
+        run: tar --bzip2 -xf boost_1_79_0.tar.bz2
+
+      - name: Build and install Boost
+        working-directory: ./boost_1_79_0
+        run: |
+          ./bootstrap.sh --prefix=/usr/local --with-libraries=filesystem,system,program_options,test
+          ./b2 -d0
+          sudo ./b2 -d0 install
+          sudo ldconfig
