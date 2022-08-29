@@ -42,7 +42,7 @@ Only UNIX (I'm using Gentoo, Ubuntu also would work because travis).
 Requirements:
 * [g++](https://gcc.gnu.org/) supporting C++11 (not sure about minimum version, travis is using 4.8.4)
 * [CMake](https://cmake.org/) >= 3.0
-* [Boost](http://www.boost.org/) >= 1.60.0
+* [Boost](http://www.boost.org/) >= 1.79.0
 * [libmusicbrainz](https://musicbrainz.org/doc/libmusicbrainz)
 * [TagLib](http://taglib.org/)
 * [pugixml](http://pugixml.org/)
