@@ -38,9 +38,7 @@ jobs:
 
       - name: Build
         working-directory: ${{github.workspace}}/build
-        run: |
-          sudo ldconfig
-          make VERBOSE=1
+        run: make -j2
 
       - name: Run tests
         working-directory: ${{github.workspace}}/build

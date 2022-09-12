@@ -58,8 +58,8 @@ set(BUILD_LIBRARIES
 	boost_filesystem
 	boost_program_options
 	tag
-	musicbrainz5
-	pugixml	
+	${LIBMUSICBRAINZ5_LIBRARIES}
+	pugixml
 )
 
 # Build
