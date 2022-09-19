@@ -1,6 +1,6 @@
 # mu-refreshy
 
-[![Build Status](https://github.com/ZX-Diablo/mu-refreshy/actions/workflows/build-test-coverage.yml)](https://github.com/ZX-Diablo/mu-refreshy/actions/workflows/build-test-coverage.yml/badge.svg)
+[![Build Status](https://github.com/ZX-Diablo/mu-refreshy/actions/workflows/build-test-coverage.yml/badge.svg)](https://github.com/ZX-Diablo/mu-refreshy/actions/workflows/build-test-coverage.yml)
 [![Build Status](https://travis-ci.org/ZX-Diablo/mu-refreshy.svg?branch=master)](https://travis-ci.org/ZX-Diablo/mu-refreshy)
 [![Coverage Status](https://coveralls.io/repos/github/ZX-Diablo/mu-refreshy/badge.svg?branch=master)](https://coveralls.io/github/ZX-Diablo/mu-refreshy)
 
