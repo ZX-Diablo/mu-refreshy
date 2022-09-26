@@ -52,5 +52,4 @@ jobs:
         uses: coverallsapp/github-action@1.1.3
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
-          base-path: ${{github.workspace}}/build
-          path-to-lcov: mu-refreshy.cleaned.info
+          path-to-lcov: build/mu-refreshy.cleaned.info
