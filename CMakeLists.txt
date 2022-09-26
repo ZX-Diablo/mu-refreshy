@@ -5,8 +5,10 @@ project(mu-refreshy)
 # Options
 
 option(BUILD_TESTS "Build tests" OFF)
+option(BUILD_COVERAGE "Build LCOV coverage" OFF)
 option(BOOST_TEST_INTEGRATION_ENABLED "Enable integration tests" ON)
 message(STATUS "BUILD_TESTS: ${BUILD_TESTS}")
+message(STATUS "BUILD_COVERAGE: ${BUILD_COVERAGE}")
 message(STATUS "BOOST_TEST_INTEGRATION_ENABLED: ${BOOST_TEST_INTEGRATION_ENABLED}")
 
 if (BOOST_TEST_INTEGRATION_ENABLED)
@@ -103,6 +105,28 @@ if(BUILD_TESTS)
 		set_target_properties(${test_name} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/tests)
 		add_test(NAME ${test_name} COMMAND ${test_name})
 	endforeach()
+endif()
+
+# Coverage
+
+if(BUILD_COVERAGE)
+	find_program(GCOV_PATH gcov)
+	if(NOT GCOV_PATH)
+		message(FATAL_ERROR "gcov not found!")
+	endif()
+
+	find_program(LCOV_PATH lcov)
+	if(NOT LCOV_PATH)
+		message(FATAL_ERROR "lcov not found!")
+	endif()
+
+	add_custom_target(coverage
+		${LCOV_PATH} --directory . --capture --output-file ${PROJECT_NAME}.info
+		COMMAND ${LCOV_PATH} --remove ${PROJECT_NAME}.info '*/FakeIt/*' '*/tests/*' '/usr/*' --output-file ${PROJECT_NAME}.cleaned.info
+		COMMAND ${LCOV_PATH} --list ${PROJECT_NAME}.cleaned.info
+		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+		COMMENT "Generating coverage report"
+	)
 endif()
 
 # Install
