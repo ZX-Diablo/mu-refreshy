@@ -1,7 +1,6 @@
 # mu-refreshy
 
 [![Build Status](https://github.com/ZX-Diablo/mu-refreshy/actions/workflows/build-test-coverage.yml/badge.svg)](https://github.com/ZX-Diablo/mu-refreshy/actions/workflows/build-test-coverage.yml)
-[![Build Status](https://travis-ci.org/ZX-Diablo/mu-refreshy.svg?branch=master)](https://travis-ci.org/ZX-Diablo/mu-refreshy)
 [![Coverage Status](https://coveralls.io/repos/github/ZX-Diablo/mu-refreshy/badge.svg?branch=master)](https://coveralls.io/github/ZX-Diablo/mu-refreshy)
 
 ## What is it
@@ -39,9 +38,9 @@ It takes about 40 minutes to process around 3000 files in 8 threads.
 
 ## Building
 
-Only UNIX (I'm using Gentoo, Ubuntu also would work because travis).  
+Only UNIX (I'm using Gentoo, Ubuntu also should work).
 Requirements:
-* [g++](https://gcc.gnu.org/) supporting C++11 (not sure about minimum version, travis is using 4.8.4)
+* [g++](https://gcc.gnu.org/) supporting C++11 (not sure about minimum version)
 * [CMake](https://cmake.org/) >= 3.0
 * [Boost](http://www.boost.org/) >= 1.79.0
 * [libmusicbrainz](https://musicbrainz.org/doc/libmusicbrainz)
@@ -99,7 +98,7 @@ Scan all files in given directory using additional data from previous run and st
 Probably would not develop it further because problem solved.
 But if I return to it anytime at least there is a plan what to do.
 
-- [ ] Contribute info to musicbrainz
+- [x] Contribute info to musicbrainz
 - [ ] Ignore case when comparing albums
 - [ ] Use remote albums info to update local albums to get more precise dates and results (also ignore case in name comparison)
 - [ ] Windows cross-compilation support. At least working precompiled executable
