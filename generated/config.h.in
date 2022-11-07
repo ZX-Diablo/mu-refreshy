@@ -1,0 +1,11 @@
+#pragma once
+
+/**
+ * This header is automatically generated during build process
+ * DO NOT EDIT
+ */
+
+#define PROJECT_VERSION_MAJOR @mu-refreshy_VERSION_MAJOR@
+#define PROJECT_VERSION_MINOR @mu-refreshy_VERSION_MINOR@
+#define PROJECT_VERSION_PATCH @mu-refreshy_VERSION_PATCH@
+#define PROJECT_VERSION "@mu-refreshy_VERSION@"

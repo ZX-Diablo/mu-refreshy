@@ -64,6 +64,17 @@ set(BUILD_LIBRARIES
 	pugixml
 )
 
+# Generate header
+
+configure_file(
+	"generated/config.h.in"
+	"${CMAKE_BINARY_DIR}/config.h"
+	@ONLY
+)
+include_directories(
+	${CMAKE_BINARY_DIR}
+)
+
 # Build
 
 file(GLOB_RECURSE sources "src/*/*.cpp")

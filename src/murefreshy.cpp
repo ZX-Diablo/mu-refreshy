@@ -14,6 +14,10 @@
 #include <storage/storage.h>
 #include <thread/pool.h>
 
+#include <config.h>
+
+
+
 int main (int argc, char** argv)
 {
 	boost::program_options::positional_options_description pos_flag;
@@ -78,7 +82,7 @@ int main (int argc, char** argv)
 
 	std::cerr << "Total " << files.size() << " files" << std::endl;
 
-	musicdb mb(std::make_shared<musicbrainz>("mu-refreshy/0.5.2 (https://github.com/ZX-Diablo/mu-refreshy)"));
+	musicdb mb(std::make_shared<musicbrainz>("mu-refreshy/" PROJECT_VERSION " (https://github.com/ZX-Diablo/mu-refreshy)"));
 	pool tp(options["thread"].as<unsigned int>());
 	std::atomic_int counter(0);
 
