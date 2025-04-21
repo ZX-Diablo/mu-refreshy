@@ -133,7 +133,7 @@ if(BUILD_COVERAGE)
 	endif()
 
 	add_custom_target(coverage
-		${LCOV_PATH} --directory . --capture --output-file ${PROJECT_NAME}.info
+		${LCOV_PATH} --directory . --capture --ignore-errors mismatch,inconsistent --output-file ${PROJECT_NAME}.info
 		COMMAND ${LCOV_PATH} --remove ${PROJECT_NAME}.info '*/FakeIt/*' '*/tests/*' '/usr/*' --output-file ${PROJECT_NAME}.cleaned.info
 		COMMAND ${LCOV_PATH} --list ${PROJECT_NAME}.cleaned.info
 		WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
