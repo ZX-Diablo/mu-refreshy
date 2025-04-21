@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.30)
 
 project(mu-refreshy)
 
@@ -20,8 +20,8 @@ endif()
 # Project version
 
 set(mu-refreshy_VERSION_MAJOR 0)
-set(mu-refreshy_VERSION_MINOR 5)
-set(mu-refreshy_VERSION_PATCH 2)
+set(mu-refreshy_VERSION_MINOR 6)
+set(mu-refreshy_VERSION_PATCH 0)
 set(mu-refreshy_VERSION ${mu-refreshy_VERSION_MAJOR}.${mu-refreshy_VERSION_MINOR}.${mu-refreshy_VERSION_PATCH})
 
 # CMake flags
@@ -42,13 +42,13 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 # Find packages
 
-set(BOOST_REQUIRED_LIBS system filesystem program_options)
+set(BOOST_REQUIRED_LIBS system filesystem program_options locale)
 if(BUILD_TESTS)
 	set(BOOST_REQUIRED_LIBS ${BOOST_REQUIRED_LIBS} unit_test_framework)
 	find_package(FakeIt REQUIRED)
 endif()
 
-find_package(Boost 1.79.0 REQUIRED COMPONENTS ${BOOST_REQUIRED_LIBS})
+find_package(Boost 1.81.0 REQUIRED COMPONENTS ${BOOST_REQUIRED_LIBS})
 find_package(MusicBrainz5 REQUIRED)
 find_package(TagLib REQUIRED)
 find_package(PugiXML REQUIRED)
@@ -59,6 +59,7 @@ set(BUILD_LIBRARIES
 	boost_system
 	boost_filesystem
 	boost_program_options
+	boost_locale
 	tag
 	${LIBMUSICBRAINZ5_LIBRARIES}
 	pugixml

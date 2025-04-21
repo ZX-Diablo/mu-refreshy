@@ -13,6 +13,9 @@ const std::string RELEASE_DATE = "2000-06-13";
 const std::string RELEASE_ID_OTHER = "B987";
 const std::string RELEASE_TITLE_PREV = "Art album";
 
+const std::string RELEASE_TITLE_CASE = "mUśíc ÁlbuM";
+const std::string RELEASE_DATE_YEAR = "2000-01-01";
+
 const std::string RELEASE_DATE_PREV_YEAR = "1999-06-13";
 const std::string RELEASE_DATE_PREV_MONTH = "2000-05-13";
 const std::string RELEASE_DATE_PREV_DAY = "2000-06-12";
@@ -133,5 +136,59 @@ BOOST_AUTO_TEST_SUITE(comparator);
 		release_ptr_t r2 = std::make_shared<release>(std::string(), std::string(), std::string(), RELEASE_DATE_PREV_DAY);
 		release_comparator rc;
 		BOOST_TEST(rc(r2, r1));
+	}
+BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE(similar_comparator);
+	BOOST_AUTO_TEST_CASE(nullptr_both)
+	{
+		release_similar_comparator rsc(nullptr);
+		BOOST_TEST(!rsc(nullptr));
+	}
+
+	BOOST_AUTO_TEST_CASE(nullptr_param)
+	{
+		release_similar_comparator rsc(nullptr);
+		release_ptr_t similar = std::make_shared<release>(std::string(), RELEASE_TITLE_CASE, std::string(), RELEASE_DATE);
+		BOOST_TEST(!rsc(similar));
+	}
+
+	BOOST_AUTO_TEST_CASE(nullptr_similar)
+	{
+		release_ptr_t param = std::make_shared<release>(std::string(), RELEASE_TITLE, std::string(), RELEASE_DATE_YEAR);
+		release_similar_comparator rsc(param);
+		BOOST_TEST(!rsc(nullptr));
+	}
+
+	BOOST_AUTO_TEST_CASE(not_similar_different_year)
+	{
+		release_ptr_t param = std::make_shared<release>(std::string(), RELEASE_TITLE, std::string(), RELEASE_DATE_YEAR);
+		release_similar_comparator rsc(param);
+		release_ptr_t similar = std::make_shared<release>(std::string(), RELEASE_TITLE_CASE, std::string(), RELEASE_DATE_PREV_YEAR);
+		BOOST_TEST(!rsc(similar));
+	}
+
+	BOOST_AUTO_TEST_CASE(not_similar_different_title)
+	{
+		release_ptr_t param = std::make_shared<release>(std::string(), RELEASE_TITLE, std::string(), RELEASE_DATE_YEAR);
+		release_similar_comparator rsc(param);
+		release_ptr_t similar = std::make_shared<release>(std::string(), RELEASE_TITLE_PREV, std::string(), RELEASE_DATE);
+		BOOST_TEST(!rsc(similar));
+	}
+
+	BOOST_AUTO_TEST_CASE(similar_same_title)
+	{
+		release_ptr_t param = std::make_shared<release>(std::string(), RELEASE_TITLE, std::string(), RELEASE_DATE_YEAR);
+		release_similar_comparator rsc(param);
+		release_ptr_t similar = std::make_shared<release>(std::string(), RELEASE_TITLE, std::string(), RELEASE_DATE);
+		BOOST_TEST(rsc(similar));
+	}
+
+	BOOST_AUTO_TEST_CASE(similar_different_case_title)
+	{
+		release_ptr_t param = std::make_shared<release>(std::string(), RELEASE_TITLE, std::string(), RELEASE_DATE_YEAR);
+		release_similar_comparator rsc(param);
+		release_ptr_t similar = std::make_shared<release>(std::string(), RELEASE_TITLE_CASE, std::string(), RELEASE_DATE);
+		BOOST_TEST(rsc(similar));
 	}
 BOOST_AUTO_TEST_SUITE_END();

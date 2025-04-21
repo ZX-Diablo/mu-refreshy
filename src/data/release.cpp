@@ -1,5 +1,9 @@
 #include <data/release.h>
 
+#include <boost/locale.hpp>
+
+std::locale release::loc = boost::locale::generator()("en_US.UTF-8");
+
 release::release (const std::string& id, const std::string& title, const std::string& type, const date& d)
 	: id(id)
 	, title(title)
@@ -37,7 +41,7 @@ bool operator< (const release& lhs, const release& rhs)
 
 	if (!(lhs.get_date() < rhs.get_date()) && !(rhs.get_date() < lhs.get_date()))
 	{
-		return lhs.get_title() < rhs.get_title();
+		return std::use_facet<boost::locale::collator<char>>(release::loc).compare(boost::locale::collate_level::primary, lhs.get_title(), rhs.get_title()) < 0;
 	}
 
 	return lhs.get_date() < rhs.get_date();
@@ -56,4 +60,25 @@ bool release_comparator::operator() (const release_ptr_t& lhs, const release_ptr
 	}
 
 	return *lhs < *rhs;
+}
+
+release_similar_comparator::release_similar_comparator (const release_ptr_t& release)
+	: release(release)
+{
+}
+
+bool release_similar_comparator::operator() (const release_ptr_t& similar)
+{
+	if (release == nullptr || similar == nullptr)
+	{
+		return false;
+	}
+
+	std::string similar_year = similar->get_date().get().substr(0, 4);
+	if (release->get_date().get().find(similar_year) == 0)
+	{
+		return std::use_facet<boost::locale::collator<char>>(release::loc).compare(boost::locale::collate_level::primary, release->get_title(), similar->get_title()) == 0;
+	}
+
+	return false;
 }

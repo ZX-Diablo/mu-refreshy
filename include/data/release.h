@@ -3,12 +3,16 @@
 #include <data/date.h>
 
 #include <string>
+#include <locale>
 #include <ostream>
 #include <memory>
 #include <set>
 
 class release
 {
+public:
+	static std::locale loc;
+
 public:
 	release (const std::string& id, const std::string& title, const std::string& type, const date& d);
 
@@ -35,3 +39,11 @@ struct release_comparator
 };
 
 typedef std::set<release_ptr_t, release_comparator> release_set_t;
+
+struct release_similar_comparator
+{
+	explicit release_similar_comparator (const release_ptr_t& release);
+	bool operator() (const release_ptr_t& similar);
+private:
+	release_ptr_t release;
+};

@@ -19,6 +19,20 @@ const release_ptr_t RELEASE = std::make_shared<release>(RELEASE_ID, RELEASE_TITL
 const release_set_t RELEASE_SET = { RELEASE };
 const unsigned int RELEASE_SET_SIZE_EXPECTED = 1;
 
+const std::string LOCAL_RELEASE_ID = "B456";
+const std::string LOCAL_RELEASE_TITLE = "Different Case And Accents";
+const std::string LOCAL_RELEASE_TYPE = "full album";
+const std::string LOCAL_RELEASE_DATE = "1996-01-01";
+const release_ptr_t LOCAL_RELEASE = std::make_shared<release>(LOCAL_RELEASE_ID, LOCAL_RELEASE_TITLE, LOCAL_RELEASE_TYPE, date(LOCAL_RELEASE_DATE));
+
+const std::string REMOTE_RELEASE_ID = "C678";
+const std::string REMOTE_RELEASE_TITLE = "DíFFerent caśe and Áccents";
+const std::string REMOTE_RELEASE_TYPE = "full album";
+const std::string REMOTE_RELEASE_DATE = "1996-07-25";
+const release_ptr_t REMOTE_RELEASE = std::make_shared<release>(REMOTE_RELEASE_ID, REMOTE_RELEASE_TITLE, REMOTE_RELEASE_TYPE, date(REMOTE_RELEASE_DATE));
+
+
+
 BOOST_AUTO_TEST_SUITE(constructors);
 	BOOST_AUTO_TEST_CASE(empty)
 	{
@@ -144,6 +158,47 @@ BOOST_AUTO_TEST_SUITE(releases);
 		a.clear_releases();
 		BOOST_TEST(a.get_releases().empty());
 		BOOST_TEST(a.get_local_releases().size() == RELEASE_SET_SIZE_EXPECTED);
+	}
+BOOST_AUTO_TEST_SUITE_END();
+
+BOOST_AUTO_TEST_SUITE(release_reconciliation);
+	BOOST_AUTO_TEST_CASE(no_reconciliation)
+	{
+		artist a = artist(std::string());
+		a.add_local_release(LOCAL_RELEASE);
+		a.add_release(RELEASE);
+		BOOST_REQUIRE(a.get_local_releases().size() == RELEASE_SET_SIZE_EXPECTED);
+		BOOST_REQUIRE(a.get_releases().size() == RELEASE_SET_SIZE_EXPECTED);
+
+		release_ptr_t r = *a.get_local_releases().begin();
+		BOOST_TEST(r->get_date().get() == LOCAL_RELEASE_DATE);
+
+		r = *a.get_releases().begin();
+		BOOST_TEST(r->get_date().get() == RELEASE_DATE);
+	}
+
+	BOOST_AUTO_TEST_CASE(reconciliation_local_first)
+	{
+		artist a = artist(std::string());
+		a.add_local_release(LOCAL_RELEASE);
+		a.add_release(REMOTE_RELEASE);
+		BOOST_REQUIRE(a.get_local_releases().size() == RELEASE_SET_SIZE_EXPECTED);
+		BOOST_REQUIRE(a.get_releases().size() == RELEASE_SET_SIZE_EXPECTED);
+
+		release_ptr_t r = *a.get_local_releases().begin();
+		BOOST_TEST(r->get_date().get() == REMOTE_RELEASE_DATE);
+	}
+
+	BOOST_AUTO_TEST_CASE(reconciliation_remote_first)
+	{
+		artist a = artist(std::string());
+		a.add_release(REMOTE_RELEASE);
+		a.add_local_release(LOCAL_RELEASE);
+		BOOST_REQUIRE(a.get_local_releases().size() == RELEASE_SET_SIZE_EXPECTED);
+		BOOST_REQUIRE(a.get_releases().size() == RELEASE_SET_SIZE_EXPECTED);
+
+		release_ptr_t r = *a.get_local_releases().begin();
+		BOOST_TEST(r->get_date().get() == REMOTE_RELEASE_DATE);
 	}
 BOOST_AUTO_TEST_SUITE_END();
 

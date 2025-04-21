@@ -41,8 +41,8 @@ It takes about 40 minutes to process around 3000 files in 8 threads.
 Only UNIX (I'm using Gentoo, Ubuntu also should work).
 Requirements:
 * [g++](https://gcc.gnu.org/) supporting C++11 (not sure about minimum version)
-* [CMake](https://cmake.org/) >= 3.0
-* [Boost](http://www.boost.org/) >= 1.79.0
+* [CMake](https://cmake.org/) >= 3.30
+* [Boost](http://www.boost.org/) >= 1.81.0
 * [libmusicbrainz](https://musicbrainz.org/doc/libmusicbrainz)
 * [TagLib](http://taglib.org/)
 * [pugixml](http://pugixml.org/)
@@ -100,7 +100,7 @@ But if I return to it anytime at least there is a plan what to do.
 
 - [x] Contribute info to musicbrainz
 - [ ] Ignore case when comparing albums
-- [ ] Use remote albums info to update local albums to get more precise dates and results (also ignore case in name comparison)
+- [x] Use remote albums info to update local albums to get more precise dates and results (also ignore case in name comparison)
 - [ ] Windows cross-compilation support. At least working precompiled executable
 - [ ] Service virtualization usage to avoid calling to musicbrainz in tests
 - [ ] Configurable musicbrainz endpoint
@@ -113,6 +113,6 @@ But if I return to it anytime at least there is a plan what to do.
 ## Known issues
 
 - Local albums ID and type are always empty
-- Local albums release date is always on the first of january (only year info), so they can appear as new
+- Local albums release date is always on the first of january (only year info) unless updated from remote
 - Remote albums with unknown release date are on 1970-01-01
 - There can be several remote artist IDs, only way to resolve it is to fiddle with xml files

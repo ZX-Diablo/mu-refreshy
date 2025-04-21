@@ -1,6 +1,8 @@
 #include <data/artist.h>
 #include <data/releasefactory.h>
 
+#include <algorithm>
+
 artist::artist (const std::string& name)
 	: default_id()
 	, ids()
@@ -33,6 +35,14 @@ void artist::add_release (const release_ptr_t& release)
 	if (release)
 	{
 		this->releases.insert(release);
+
+		auto it = std::find_if(this->local_releases.begin(), this->local_releases.end(), release_similar_comparator(release));
+		if (it != this->local_releases.end())
+		{
+			release_ptr_t updated = std::make_shared<::release>((*it)->get_id(), (*it)->get_title(), (*it)->get_type(), release->get_date());
+			this->local_releases.erase(it);
+			this->local_releases.insert(updated);
+		}
 	}
 }
 
@@ -40,7 +50,15 @@ void artist::add_local_release (const release_ptr_t& release)
 {
 	if (release)
 	{
-		this->local_releases.insert(release);
+		release_ptr_t updated = release;
+
+		auto it = std::find_if(this->releases.begin(), this->releases.end(), release_similar_comparator(release));
+		if (it != this->releases.end())
+		{
+			updated = std::make_shared<::release>(release->get_id(), release->get_title(), release->get_type(), (*it)->get_date());
+		}
+
+		this->local_releases.insert(updated);
 	}
 }
 
